@@ -1,0 +1,828 @@
+{
+	"info": {
+		"_postman_id": "09284406-46d3-4687-8c97-f25886058ed0",
+		"name": "Temptic",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5eabf0e9-80b1-4785-9d42-5414ce7cde51",
+						"exec": [
+							"pm.test(\"set token\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.globals.set(\"temptic_access_token\", jsonData.data.token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "9f6a7630-4e59-4911-a648-512b9a6040fb",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"sm_hp\": \"1994\",\n    \"sm_pw\": \"qqq111\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/auth/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register",
+			"id": "7346cd5b-9bf5-4674-8786-284c221742e6",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"sm_hp\": \"1994\",\n    \"sm_nick\" :\"anhnd\",\n    \"sm_pw\": \"qqq111\",\n    \"sm_regtype\": \"p\",\n    \"verify\": 1\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/auth/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "review main",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "52b8f029-12aa-4430-8999-9f4a7ff90c60",
+						"exec": [
+							"pm.test(\"set next page token\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.globals.set(\"next_page_token\", jsonData.data.next_page);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "3aa28a68-8c1c-40e2-aff3-1892ce40f71d",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{temptic_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": 1,\n    \"page\": {{next_page_token}}\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/review/getList",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"review",
+						"getList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "review my",
+			"id": "3e142387-ceae-4fb0-aecf-d22f19324e22",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{temptic_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW5Tb2NpYWwiLCJpYXQiOjE2NjI1MjA3MTgsImV4cCI6MTY2MjYwNzExOCwibmJmIjoxNjYyNTIwNzE4LCJqdGkiOiJnOG1DSUxOUWwzZFJBRmJ0Iiwic3ViIjozMzEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.OpiXXPUV1bPKMcVGrtdl0dV7NkdkQphRS8M8LEMJQEM"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"page\": \"\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/review/my",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"review",
+						"my"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "review detail",
+			"id": "15b1b779-42d1-49d5-9a42-b86af0be38cd",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{temptic_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"sr_noid\": 10\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/review/detail",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"review",
+						"detail"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "review list comment",
+			"id": "789b3a38-022c-499a-9b90-a6e61475fc27",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{temptic_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"sr_noid\": 10,\n    \"page\": \"\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/review/comment",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"review",
+						"comment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "review live",
+			"id": "4cadf480-5e86-4596-9377-7d2973834743",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{temptic_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW5Tb2NpYWwiLCJpYXQiOjE2NjI1MjA3MTgsImV4cCI6MTY2MjYwNzExOCwibmJmIjoxNjYyNTIwNzE4LCJqdGkiOiJnOG1DSUxOUWwzZFJBRmJ0Iiwic3ViIjozMzEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.OpiXXPUV1bPKMcVGrtdl0dV7NkdkQphRS8M8LEMJQEM"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"sr_noid\": 62,\n    \"check_like\": 1\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/review/like",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"review",
+						"like"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "review unlike",
+			"id": "a52cf281-9ef4-4eca-8f65-1b876d6772d5",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{temptic_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW5Tb2NpYWwiLCJpYXQiOjE2NjI1MjA3MTgsImV4cCI6MTY2MjYwNzExOCwibmJmIjoxNjYyNTIwNzE4LCJqdGkiOiJnOG1DSUxOUWwzZFJBRmJ0Iiwic3ViIjozMzEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.OpiXXPUV1bPKMcVGrtdl0dV7NkdkQphRS8M8LEMJQEM"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"sr_noid\": 62,\n    \"check_like\": 0\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/review/like",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"review",
+						"like"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "review commend add",
+			"id": "b3d03471-8d00-4720-9bcf-053de4946127",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{temptic_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW5Tb2NpYWwiLCJpYXQiOjE2NjI1MjA3MTgsImV4cCI6MTY2MjYwNzExOCwibmJmIjoxNjYyNTIwNzE4LCJqdGkiOiJnOG1DSUxOUWwzZFJBRmJ0Iiwic3ViIjozMzEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.OpiXXPUV1bPKMcVGrtdl0dV7NkdkQphRS8M8LEMJQEM"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"sr_noid\": 62,\n    \"src_content\": \"comment add\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/review/comment/add",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"review",
+						"comment",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "review commend update",
+			"id": "786a1e06-6cfa-4fc2-93e1-275cd6a4d8ab",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{temptic_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW5Tb2NpYWwiLCJpYXQiOjE2NjI1MjA3MTgsImV4cCI6MTY2MjYwNzExOCwibmJmIjoxNjYyNTIwNzE4LCJqdGkiOiJnOG1DSUxOUWwzZFJBRmJ0Iiwic3ViIjozMzEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.OpiXXPUV1bPKMcVGrtdl0dV7NkdkQphRS8M8LEMJQEM"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"sr_noid\": 62,\n    \"src_content\": \"comment update\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/review/comment/update",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"review",
+						"comment",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "review comment delete",
+			"id": "83965a00-a826-412f-bc01-c0b5f65a50ea",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{temptic_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW5Tb2NpYWwiLCJpYXQiOjE2NjI1MjA3MTgsImV4cCI6MTY2MjYwNzExOCwibmJmIjoxNjYyNTIwNzE4LCJqdGkiOiJnOG1DSUxOUWwzZFJBRmJ0Iiwic3ViIjozMzEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.OpiXXPUV1bPKMcVGrtdl0dV7NkdkQphRS8M8LEMJQEM"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"sr_noid\": 62\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/review/comment/delete",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"review",
+						"comment",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "store home product",
+			"id": "2d681e51-66cc-4847-a372-da74c880855e",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{temptic_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"sc_code\": \"001\",\n    \"page\": 0\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/store/product",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"store",
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "product detail",
+			"id": "c1ea913f-a650-41ad-84d3-11a14437c7b8",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{temptic_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"p_code\": \"p20220414153528\"\n}\n"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/store/detail",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"store",
+						"detail"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "product bookmark save ",
+			"id": "a38e1601-d1b4-4f29-bcff-a15d401ddbc6",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{temptic_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW5Tb2NpYWwiLCJpYXQiOjE2NjI1MjA3MTgsImV4cCI6MTY2MjYwNzExOCwibmJmIjoxNjYyNTIwNzE4LCJqdGkiOiJnOG1DSUxOUWwzZFJBRmJ0Iiwic3ViIjozMzEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.OpiXXPUV1bPKMcVGrtdl0dV7NkdkQphRS8M8LEMJQEM"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"p_code\": \"p20220119232757\",\n    \"is_liked\": 1\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/store/saveBookmark",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"store",
+						"saveBookmark"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "product bookmark unsave",
+			"id": "931d0276-3509-4105-ac45-e4725dcdb477",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{temptic_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW5Tb2NpYWwiLCJpYXQiOjE2NjI1MjA3MTgsImV4cCI6MTY2MjYwNzExOCwibmJmIjoxNjYyNTIwNzE4LCJqdGkiOiJnOG1DSUxOUWwzZFJBRmJ0Iiwic3ViIjozMzEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.OpiXXPUV1bPKMcVGrtdl0dV7NkdkQphRS8M8LEMJQEM"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"p_code\": \"p20220119232757\",\n    \"is_liked\": 0\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/store/saveBookmark",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"store",
+						"saveBookmark"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "store home",
+			"id": "535a7ea2-26aa-49cf-a953-0972dffe66e0",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{temptic_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"page\": \"\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/store/main",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"store",
+						"main"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "store product",
+			"id": "ad550e2e-96a9-4427-923e-0e41b0236bb5",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{temptic_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"sc_code\": \"004\",\n    \"page\": \"\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/store/product",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"store",
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "store product recommended",
+			"id": "d13b2b26-6744-4b7b-b162-35ed649abb98",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{temptic_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"page\": \"\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/store/productRecommended",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"store",
+						"productRecommended"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
