@@ -1,4 +1,4 @@
-package com.example
+package ftech.ai
 
 import io.ktor.server.routing.*
 import io.ktor.http.*
@@ -10,6 +10,7 @@ import io.ktor.client.statement.*
 import kotlin.test.*
 import io.ktor.server.testing.*
 import com.example.plugins.*
+import ftech.ai.plugins.configureRouting
 
 class ApplicationTest {
     @Test

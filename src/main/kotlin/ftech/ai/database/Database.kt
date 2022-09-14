@@ -1,11 +1,11 @@
-package com.example.database
+package ftech.ai.database
 
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.SQLException
 
 
-class ConnectDatabase {
+class Database {
     @Throws(ClassNotFoundException::class)
     fun getConnection(): Connection? {
         var connection: Connection? = null

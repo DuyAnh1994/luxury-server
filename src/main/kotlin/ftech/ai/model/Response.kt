@@ -1,4 +1,4 @@
-package com.example.model
+package ftech.ai.model
 
 import kotlinx.serialization.Serializable
 
