@@ -1,10 +1,11 @@
 package ftech.ai.dao.register
 
 import ftech.ai.database.ChangeDatabase
+import ftech.ai.database.QuerySql
 import ftech.ai.model.User
 
 
-class UserDaoImpl : IUserDao {
+class RegisterDaoImpl : IRegisterDao {
 
     private val listUser: MutableList<User> = ArrayList()
 
@@ -18,10 +19,7 @@ class UserDaoImpl : IUserDao {
             val fullName: String = result.getString(4)
             val gender: String = result.getString(5)
             val phoneNumber: Int = result.getInt(6)
-            val email: String = result.getString(7)
-            val dataInfoId: Int = result.getInt(8)
-            val addressId: Int = result.getInt(9)
-            val reservationId: Int = result.getInt(10)
+            val birthday: String = result.getDate(7).toString()
             val user = User(
                 userId,
                 userName,
@@ -29,10 +27,7 @@ class UserDaoImpl : IUserDao {
                 fullName,
                 gender,
                 phoneNumber,
-                email,
-                dataInfoId,
-                addressId,
-                reservationId
+                birthday
             )
             listUser.add(user)
         }
@@ -40,7 +35,18 @@ class UserDaoImpl : IUserDao {
         return listUser
     }
 
-    override fun insertUser(sql: String): String {
-        return ChangeDatabase.setData(sql)
+    override fun insertUser(user: User): Int {
+        val sqlCheck = QuerySql.checkEmail(user.userName)
+        val result = ChangeDatabase.getData(sqlCheck)
+        if (result.getInt(1) == 1) {
+            val sqlInsert = QuerySql.insertUser(user)
+            if (ChangeDatabase.setData(sqlInsert) == "1") {
+                return 1
+            }
+            return 0
+        } else {
+            return -1
+        }
     }
+
 }

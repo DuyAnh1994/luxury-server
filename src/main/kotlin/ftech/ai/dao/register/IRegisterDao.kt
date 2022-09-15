@@ -2,7 +2,7 @@ package ftech.ai.dao.register
 
 import ftech.ai.model.User
 
-interface IUserDao {
+interface IRegisterDao {
     fun getUser() : MutableList<User>
-    fun insertUser(sql : String) : String
+    fun insertUser(user : User) : Int
 }

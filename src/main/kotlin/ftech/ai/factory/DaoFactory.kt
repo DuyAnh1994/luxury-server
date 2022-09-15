@@ -1,14 +1,14 @@
 package ftech.ai.factory
 
-import ftech.ai.dao.register.IUserDao
-import ftech.ai.dao.register.UserDaoImpl
+import ftech.ai.dao.register.IRegisterDao
+import ftech.ai.dao.register.RegisterDaoImpl
 
 object DaoFactory {
 
-    private val userDaoImpl = UserDaoImpl()
+    private val registerDaoImpl = RegisterDaoImpl()
 
-    fun getUserDao() : IUserDao{
-        return userDaoImpl
+    fun getRegisterDao() : IRegisterDao{
+        return registerDaoImpl
     }
 
 }

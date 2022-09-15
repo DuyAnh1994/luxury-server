@@ -20,7 +20,7 @@ object ChangeDatabase {
     fun setData(sql: String): String {
         return try {
             statement.executeUpdate(sql)
-            "Success"
+            "1"
         } catch (e: Exception) {
             e.message!!
         }
