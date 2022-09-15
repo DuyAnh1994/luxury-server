@@ -1,0 +1,26 @@
+Danh sách API c?a App Travel-Luxury:
+
+- API ki?m tra email dã t?n t?i chua
+- API dang kí tài kho?n
+
+- API check login
+
+- API màn home:(data tr? v?)
++ danh sách chuy?n bay (?nh , tiêu d?, ngày)
++ danh sách khuy?n m?i ( ?nh)
++ danh sách khách s?n ( ?nh) 
+
+- API tìm ki?m khách s?n( Ð?a ch?, ngày check-in, check-out, thông tin phòng)
+
+- API màn hotel
++ danh sách Top luxury-stay d?t nh?t
++ danh sách Top Picked stay nhi?u nh?t
++ danh sách khuy?n m?i
+
+-API màn hotel details
++  thông tin chi ti?t hotel
+
+- API màn select room 
++ toàn b? thông tin phòng trong hotel
+
+-- T?m th?i các API dang dùng và chu?n b? dùng s? t?o tru?c sau d?nh hu?ng thêm ch?c nang s? thêm sau.
