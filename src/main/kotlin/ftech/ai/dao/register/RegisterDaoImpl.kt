@@ -1,52 +1,66 @@
 package ftech.ai.dao.register
 
 import ftech.ai.database.ChangeDatabase
+import ftech.ai.database.Data
 import ftech.ai.database.QuerySql
-import ftech.ai.model.User
+import ftech.ai.model.*
 
 
 class RegisterDaoImpl : IRegisterDao {
 
-    private val listUser: MutableList<User> = ArrayList()
 
     override fun getUser(): MutableList<User> {
+        val listUser: MutableList<User> = ArrayList()
         val sql = "Select * from user"
         val result = ChangeDatabase.getData(sql)
         while (result.next()) {
-            val userId: Int = result.getInt(1)
-            val userName: String = result.getString(2)
-            val password: String = result.getString(3)
-            val fullName: String = result.getString(4)
-            val gender: String = result.getString(5)
-            val phoneNumber: Int = result.getInt(6)
-            val birthday: String = result.getDate(7).toString()
-            val user = User(
-                userId,
-                userName,
-                password,
-                fullName,
-                gender,
-                phoneNumber,
-                birthday
-            )
-            listUser.add(user)
+            listUser.add(Data.getUser(result))
         }
 
         return listUser
     }
 
-    override fun insertUser(user: User): Int {
-        val sqlCheck = QuerySql.checkEmail(user.userName)
+    override fun insertUser(user: User): Response<MutableList<User>> {
+        val sqlCheck = QuerySql.checkEmail(user.user_name)
+        var check = 0
         val result = ChangeDatabase.getData(sqlCheck)
-        if (result.getInt(1) == 1) {
+        while (result.next()) {
+            check = result.getInt(1)
+            break
+        }
+        return if (check != 1) {
             val sqlInsert = QuerySql.insertUser(user)
             if (ChangeDatabase.setData(sqlInsert) == "1") {
-                return 1
+                val response = Response<MutableList<User>>(ResponseSuccess.code, ResponseSuccess.msg)
+                response.data = getUser()
+                response
+            } else {
+                Response(ResponseFail.code, ResponseFail.msg)
             }
-            return 0
+
         } else {
-            return -1
+            Response(ResponseErrorEmail.code, ResponseErrorEmail.msg)
         }
+    }
+
+    override fun checkLogin(userName: String, password: String): Response<User> {
+        val sqlCheckLogin = QuerySql.checkLogin(userName, password)
+        val listUser: MutableList<User> = ArrayList()
+        val result = ChangeDatabase.getData(sqlCheckLogin)
+
+
+        while (result.next()) {
+            listUser.add(Data.getUser(result))
+        }
+
+        return if (listUser.size != 0) {
+            val response = Response<User>(ResponseLoginSuccess.code, ResponseLoginSuccess.msg)
+            response.data = listUser[0]
+            response
+        } else {
+            Response(ResponseLoginFail.code, ResponseLoginFail.msg)
+        }
+
     }
 
 }

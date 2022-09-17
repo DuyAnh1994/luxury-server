@@ -1,0 +1,21 @@
+POST http://127.0.0.1:8083/register
+Content-Type: application/json
+
+{
+  "userId": "1",
+  "user_name": "Vucuong1111111tnnd@gmail.com",
+  "password": "123456",
+  "full_name": "VuQuocCuong",
+  "gender": "Nam",
+  "phone_number": "0941587396",
+  "birthday": "14-06-2012"
+}
+
+###
+GET http://127.0.0.1:8083/login/Vucuong42tnnd@gmail.com/123456
+Accept: application/json
+
+
+
+
+
