@@ -33,5 +33,16 @@ object ResponseLoginSuccess {
     const val msg: String = "Login Success"
 }
 
+object Success {
+    const val code: Int = 1
+    const val msg: String = "Success"
+}
+
+object Fail {
+    const val code: Int = 0
+    const val msg: String = "Fail"
+}
+
+
 
 

@@ -1,7 +1,7 @@
 package ftech.ai.dao.register
 
 import ftech.ai.database.ChangeDatabase
-import ftech.ai.database.Data
+import ftech.ai.database.DataInfo
 import ftech.ai.database.QuerySql
 import ftech.ai.model.*
 
@@ -14,7 +14,7 @@ class RegisterDaoImpl : IRegisterDao {
         val sql = "Select * from user"
         val result = ChangeDatabase.getData(sql)
         while (result.next()) {
-            listUser.add(Data.getUser(result))
+            listUser.add(DataInfo.getUser(result))
         }
 
         return listUser
@@ -50,7 +50,7 @@ class RegisterDaoImpl : IRegisterDao {
 
 
         while (result.next()) {
-            listUser.add(Data.getUser(result))
+            listUser.add(DataInfo.getUser(result))
         }
 
         return if (listUser.size != 0) {

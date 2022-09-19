@@ -1,6 +1,6 @@
 package ftech.ai.database
 
-import ftech.ai.model.User
+import ftech.ai.model.*
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -8,7 +8,17 @@ import java.util.*
 
 
 object QuerySql {
-    const val tbUser: String = "travelluxury.user"
+    private const val tbUser: String = "travelluxury.user"
+    private const val tbFlight: String = "travelluxury.flight"
+    private const val tbPromotion: String = "travelluxury.promotion"
+    private const val tbHotel: String = "travelluxury.hotel"
+    private const val tbImageDetail: String = "travelluxury.image"
+    private const val tbRating: String = "travelluxury.rating"
+    private const val tbFacilities: String = "travelluxury.facilitieshotel"
+    private const val tbPolicies: String = "travelluxury.policies"
+    private const val tbDescription: String = "travelluxury.descriptionhotel"
+    private const val tbAddress: String = "travelluxury.address"
+
     fun checkEmail(email: String): String {
         return "select count(userID) as sl from ${tbUser} group by travelluxury.user.userName having travelluxury.user.userName = '${email}'"
     }
@@ -22,5 +32,57 @@ object QuerySql {
 
     fun checkLogin(username: String, password: String): String {
         return "select * from ${tbUser} Where ${tbUser}.userName = '${username}' AND ${tbUser}.password = '${password}'"
+    }
+
+    fun getFlight(): String {
+        return "Select * from ${tbFlight}"
+    }
+
+    fun insertFlight(flight: Flight): String {
+        val stringDate = flight.date_flight
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH)
+        val date = LocalDate.parse(stringDate, formatter)
+        return "Insert Into ${tbFlight}(image,title,date) Values('${flight.image_flight}','${flight.title_flight}','${date}')"
+    }
+
+    fun getPromotion(): String {
+        return "Select * from ${tbPromotion}"
+    }
+
+    fun insertPromotion(promotion: Promotion): String {
+        return "Insert Into ${tbPromotion}(image) Values('${promotion.image_promotion}')"
+    }
+
+    fun getHotel(): String {
+        return "Select * from ${tbHotel}"
+    }
+
+    fun insertHotel(hotel: Hotel): String {
+        return "Insert Into ${tbHotel}(name,image,accommodationPolicies,description,star) Values('${hotel.name_hotel}','${hotel.image_hotel}','${hotel.accommodationPolicies_hotel}','${hotel.description_hotel}','${hotel.star_home}')"
+    }
+
+    fun sqlImageDetail(id: Int): String {
+        return "Select * From ${tbImageDetail} where ${tbImageDetail}.idHotel = '${id}'"
+    }
+
+    fun sqlRating(id: Int): String {
+        return "Select * From ${tbRating} where ${tbRating}.idHotel = '${id}'"
+    }
+
+    fun sqlHotelInfo(id: Int): String {
+        return "Select ${tbHotel}.hotelId,${tbHotel}.name,${tbHotel}.star, ${tbAddress}.detail  From  ${tbImageDetail} INNER JOIN ${tbAddress} ON ${tbImageDetail}.hotelId = ${tbAddress}.hotelId" +
+                " where ${tbHotel}.hotelId = '${id}'"
+    }
+
+    fun sqlFacilities(id: Int): String {
+        return "Select * From ${tbFacilities} where ${tbFacilities}.idHotel = '${id}'"
+    }
+
+    fun sqlPolicies(id: Int): String {
+        return "Select * From ${tbPolicies} where ${tbPolicies}.idHotel = '${id}'"
+    }
+
+    fun sqlDescription(id: Int): String {
+        return "Select * From ${tbDescription} where ${tbDescription}.idHotel = '${id}'"
     }
 }

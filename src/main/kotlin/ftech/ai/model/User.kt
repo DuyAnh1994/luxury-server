@@ -13,4 +13,5 @@ data class User(
     val gender: String,
     val phone_number: Int,
     val birthday: String,
+
 )
