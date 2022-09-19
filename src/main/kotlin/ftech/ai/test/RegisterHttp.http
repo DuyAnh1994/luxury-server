@@ -55,21 +55,9 @@ Content-Type: application/json
 }
 
 ###
-GET http://127.0.0.1:8083//hotel/detail/1
+GET http://127.0.0.1:8083/home/detail/4
 Accept: application/json
 
-
-###
-GET http://127.0.0.1:8083//hotel/facilities/4
-Accept: application/json
-
-###
-GET http://127.0.0.1:8083//hotel/policies/4
-Accept: application/json
-
-###
-GET http://127.0.0.1:8083//hotel/description/4
-Accept: application/json
 
 
 

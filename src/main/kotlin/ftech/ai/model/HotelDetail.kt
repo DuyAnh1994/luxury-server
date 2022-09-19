@@ -13,7 +13,7 @@ data class HotelDetail(
 )
 
 @Serializable
-data class HotelInfo(val id: Int, val name: String, val star: Int, val address: String)
+data class HotelInfo(val id: Int, val name: String, val star: Float, val address: String)
 
 @Serializable
 data class Rating(val point: Float, val count: Int)

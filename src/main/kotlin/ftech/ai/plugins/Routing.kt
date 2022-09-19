@@ -47,24 +47,9 @@ fun Application.configureRouting() {
             call.respond(apiHome.insertHotel(hotel))
         }
 
-        get("/hotel/detail/{id?}") {
+        get("home/detail/{id?}") {
             val id = (call.parameters["id"])!!.toInt()
-            call.respond(apiHotelDetail.getImageDetail(id))
-        }
-
-        get("/hotel/facilities/{id?}") {
-            val id = (call.parameters["id"])!!.toInt()
-            call.respond(apiHotelDetail.getFacilities(id))
-        }
-
-        get("/hotel/policies/{id?}") {
-            val id = (call.parameters["id"])!!.toInt()
-            call.respond(apiHotelDetail.getPolicies(id))
-        }
-
-        get("/hotel/description/{id?}") {
-            val id = (call.parameters["id"])!!.toInt()
-            call.respond(apiHotelDetail.getDescription(id))
+            call.respond(apiHotelDetail.hotelDetail(id))
         }
 
     }

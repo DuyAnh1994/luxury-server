@@ -6,7 +6,17 @@ import ftech.ai.model.*
 
 class DetailDaoImpl : IDetailDao {
     override fun hotelDetail(idHotel: Int): Response<HotelDetail> {
-        TODO("Not yet implemented")
+        val response = Response<HotelDetail>(Success.code, Success.msg)
+        response.data = HotelDetail(
+            getImageDetail(idHotel),
+            getHotelInfo(idHotel),
+            getRating(idHotel),
+            getFacilities(idHotel),
+            getPolicies(idHotel),
+            getDescription(idHotel)
+        )
+
+        return response
     }
 
     override fun getImageDetail(idHotel: Int): MutableList<String> {
@@ -21,11 +31,17 @@ class DetailDaoImpl : IDetailDao {
     }
 
     override fun getRating(idHotel: Int): Rating {
-        TODO("Not yet implemented")
+        val sqlRating = QuerySql.sqlRating(idHotel)
+        val result = ChangeDatabase.getData(sqlRating)
+        result.next()
+        return Rating(result.getFloat(1), result.getInt(2))
     }
 
     override fun getHotelInfo(idHotel: Int): HotelInfo {
-        TODO("Not yet implemented")
+        val sqlDetailInfo = QuerySql.sqlHotelInfo(idHotel)
+        val result = ChangeDatabase.getData(sqlDetailInfo)
+        result.next()
+        return HotelInfo(result.getInt(1), result.getString(2), result.getFloat(3), result.getString(4))
     }
 
     override fun getFacilities(idHotel: Int): MutableList<String> {

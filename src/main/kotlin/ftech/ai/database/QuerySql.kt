@@ -18,6 +18,8 @@ object QuerySql {
     private const val tbPolicies: String = "travelluxury.policies"
     private const val tbDescription: String = "travelluxury.descriptionhotel"
     private const val tbAddress: String = "travelluxury.address"
+    private const val tbReview: String = "travelluxury.review"
+
 
     fun checkEmail(email: String): String {
         return "select count(userID) as sl from ${tbUser} group by travelluxury.user.userName having travelluxury.user.userName = '${email}'"
@@ -69,10 +71,25 @@ object QuerySql {
         return "Select * From ${tbRating} where ${tbRating}.idHotel = '${id}'"
     }
 
+    fun sqlCountReview(id: Int): String {
+        return "Select count(${tbReview}.id) from ${tbReview} group by ${tbReview}.hotelId having ${tbReview}.hotelId = ${id}"
+    }
+
+    fun sqlSumRatingReview(id: Int): String {
+        return "Select Sum(${tbReview}.rating) from ${tbReview} group by ${tbReview}.hotelId having ${tbReview}.hotelId = ${id}"
+    }
+
+    fun sqlUpdateRating(point: Float, count: Int, id: Int): String {
+        return "UPDATE ${tbRating} Set ${tbRating}.point = '${point}',${tbRating}.count = '${count}' Where ${tbRating}.idHotel = '${id}'"
+    }
+
+
     fun sqlHotelInfo(id: Int): String {
-        return "Select ${tbHotel}.hotelId,${tbHotel}.name,${tbHotel}.star, ${tbAddress}.detail  From  ${tbImageDetail} INNER JOIN ${tbAddress} ON ${tbImageDetail}.hotelId = ${tbAddress}.hotelId" +
+        return "Select ${tbHotel}.hotelId,${tbHotel}.name,${tbHotel}.star, ${tbAddress}.detail  From  ${tbHotel} INNER JOIN ${tbAddress} ON ${tbHotel}.hotelId = ${tbAddress}.hotelId" +
                 " where ${tbHotel}.hotelId = '${id}'"
     }
+
+
 
     fun sqlFacilities(id: Int): String {
         return "Select * From ${tbFacilities} where ${tbFacilities}.idHotel = '${id}'"
