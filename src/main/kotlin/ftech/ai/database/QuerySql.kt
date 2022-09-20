@@ -19,6 +19,9 @@ object QuerySql {
     private const val tbDescription: String = "travelluxury.descriptionhotel"
     private const val tbAddress: String = "travelluxury.address"
     private const val tbReview: String = "travelluxury.review"
+    private const val tbRoom: String = "travelluxury.room"
+    private const val tbRoomDetail: String = "travelluxury.roomdetail"
+    private const val tbRoomFacilities: String = "travelluxury.roomfacilities"
 
 
     fun checkEmail(email: String): String {
@@ -89,8 +92,6 @@ object QuerySql {
                 " where ${tbHotel}.hotelId = '${id}'"
     }
 
-
-
     fun sqlFacilities(id: Int): String {
         return "Select * From ${tbFacilities} where ${tbFacilities}.idHotel = '${id}'"
     }
@@ -101,5 +102,15 @@ object QuerySql {
 
     fun sqlDescription(id: Int): String {
         return "Select * From ${tbDescription} where ${tbDescription}.idHotel = '${id}'"
+    }
+
+    fun sqlRoom(id: Int): String {
+        return "Select ${tbRoom}.roomId,${tbRoom}.name,${tbRoom}.currentPrice,${tbRoom}.description," +
+                "${tbRoomDetail}.maxGuest,${tbRoomDetail}.bedType,${tbRoomDetail}.breakFast,${tbRoomDetail}.refundable " +
+                "from ${tbRoom} Inner join ${tbRoomDetail} On ${tbRoom}.roomId = ${tbRoomDetail}.idRoom where ${tbRoom}.idHotel = '${id}'"
+    }
+
+    fun sqlImageRoom(id: Int): String {
+        return "Select ${tbImageDetail}.url,${tbImageDetail}.idRoom from ${tbImageDetail} where ${tbImageDetail}.idHotel = '${id}'"
     }
 }

@@ -26,7 +26,6 @@ object ChangeDatabase {
         } catch (e: Exception) {
             e.message!!
         }
-
     }
 
 }

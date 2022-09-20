@@ -4,6 +4,8 @@ import ftech.ai.dao.home.HomeDaoImpl
 import ftech.ai.dao.home.IHomeDao
 import ftech.ai.dao.home.hoteldetail.DetailDaoImpl
 import ftech.ai.dao.home.hoteldetail.IDetailDao
+import ftech.ai.dao.home.room.IRoomDao
+import ftech.ai.dao.home.room.RoomDaoImpl
 import ftech.ai.dao.register.IRegisterDao
 import ftech.ai.dao.register.RegisterDaoImpl
 
@@ -13,6 +15,7 @@ object DaoFactory {
     private val registerDaoImpl = RegisterDaoImpl()
     private val homeDaoImpl = HomeDaoImpl()
     private val detailImpl = DetailDaoImpl()
+    private val roomImpl = RoomDaoImpl()
     fun getRegisterDao(): IRegisterDao {
         return registerDaoImpl
     }
@@ -23,6 +26,10 @@ object DaoFactory {
 
     fun getDetailDao(): IDetailDao {
         return detailImpl
+    }
+
+    fun getRoomDao(): IRoomDao {
+        return roomImpl
     }
 
 

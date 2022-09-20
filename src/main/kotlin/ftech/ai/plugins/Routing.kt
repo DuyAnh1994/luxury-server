@@ -13,6 +13,7 @@ fun Application.configureRouting() {
     val apiRegister = DaoFactory.getRegisterDao()
     val apiHome = DaoFactory.getHomeDao()
     val apiHotelDetail = DaoFactory.getDetailDao()
+    val apiRoom = DaoFactory.getRoomDao()
     routing {
         post("/register") {
             val user = call.receive<User>()
@@ -50,6 +51,11 @@ fun Application.configureRouting() {
         get("home/detail/{id?}") {
             val id = (call.parameters["id"])!!.toInt()
             call.respond(apiHotelDetail.hotelDetail(id))
+        }
+
+        get("home/room/{id?}") {
+            val id = (call.parameters["id"])!!.toInt()
+            call.respond(apiRoom.getRoom(id))
         }
 
     }
