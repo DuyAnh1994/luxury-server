@@ -1,8 +1,8 @@
-package ftech.ai.dao.home.hoteldetail
+package ftech.ai.dao.home.hotel.hoteldetail
 
 import ftech.ai.model.*
 
-interface IDetailDao {
+interface IHotelDetailDao {
     fun hotelDetail(idHotel: Int): Response<HotelDetail>
     fun getImageDetail(idHotel: Int): MutableList<String>
     fun getRating(idHotel: Int): Rating

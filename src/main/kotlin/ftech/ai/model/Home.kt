@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class Home(
     val listFlight: MutableList<Flight>,
     val listPromotion: MutableList<Promotion>,
-    val listHotel: MutableList<Hotel>
+    val listCity: MutableList<City>
 
 )
 
@@ -16,12 +16,6 @@ data class Flight(val id_flight: Int, val image_flight: String, val title_flight
 @Serializable
 data class Promotion(val id_promotion: Int, val image_promotion: String)
 
+
 @Serializable
-data class Hotel(
-    val id_hotel: Int,
-    val name_hotel: String,
-    val image_hotel: String,
-    val accommodationPolicies_hotel: String,
-    val description_hotel: String,
-    val star_home: Float
-)
+data class City(val id_city: Int, val name: String,val image: String)

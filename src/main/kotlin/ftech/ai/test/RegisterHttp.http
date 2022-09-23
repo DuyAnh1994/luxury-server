@@ -12,34 +12,12 @@ Content-Type: application/json
 }
 
 ###
-GET http://127.0.0.1:8083/login/Vucuong42tnnd@gmail.com/123456
+GET http://127.0.0.1:8084/login/Vucuong42tnnd@gmail.com/123456
 Accept: application/json
 
 ###
-GET http://127.0.0.1:8083/home
+GET http://127.0.0.1:8085/home
 Accept: application/json
-
-
-###
-POST http://127.0.0.1:8083/home/flight
-Content-Type: application/json
-
-{
-  "id_flight": "1",
-  "image_flight": "image3",
-  "title_flight": "title3",
-  "date_flight": "12-04-2001"
-}
-
-
-###
-POST http://127.0.0.1:8083/home/promotion
-Content-Type: application/json
-
-{
-  "id_promotion": "1",
-  "image_promotion": "image3"
-}
 
 ###
 POST http://127.0.0.1:8083/home/hotel
@@ -51,15 +29,24 @@ Content-Type: application/json
   "image_hotel": "image3",
   "accommodationPolicies_hotel": "acc3",
   "description_hotel": "des3",
-  "star_home": "4.7"
+  "star_home": "4.7",
+  "id_city": "1"
 }
 
 ###
-GET http://127.0.0.1:8083/home/detail/4
+GET http://127.0.0.1:8085/home/hotel/detail/4
 Accept: application/json
 
 ###
 GET http://127.0.0.1:8084/home/room/4
+Accept: application/json
+
+###
+GET http://127.0.0.1:8084/home/room/detail/5
+Accept: application/json
+
+###
+GET http://127.0.0.1:8085/home/city/hotel/1
 Accept: application/json
 
 

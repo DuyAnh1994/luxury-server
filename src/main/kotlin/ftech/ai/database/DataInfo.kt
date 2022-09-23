@@ -1,9 +1,6 @@
 package ftech.ai.database
 
-import ftech.ai.model.Flight
-import ftech.ai.model.Hotel
-import ftech.ai.model.Promotion
-import ftech.ai.model.User
+import ftech.ai.model.*
 import java.sql.ResultSet
 
 object DataInfo {
@@ -36,12 +33,43 @@ object DataInfo {
     }
 
     fun getHotel(result: ResultSet): Hotel {
-        val homeId: Int = result.getInt(1)
+        val id: Int = result.getInt(1)
+        val name: String = result.getString(2)
+        val star: Float = result.getFloat(3)
+        val address: String = result.getString(4)
+        val point: Float = result.getFloat(5)
+        val count: Int = result.getInt(6)
+        val price: Int = result.getInt(7)
+        val image: String = result.getString(8)
+        return Hotel(id, name, star, address, point, count, price, image)
+    }
+
+    fun getCity(result: ResultSet): City {
+        val id: Int = result.getInt(1)
         val name: String = result.getString(2)
         val image: String = result.getString(3)
-        val accommodationPolicies: String = result.getString(4)
-        val description: String = result.getString(5)
-        val star: Float = result.getFloat(6)
-        return Hotel(homeId, name, image, accommodationPolicies, description, star)
+        return City(id, name, image)
+    }
+
+    fun getRoom(result: ResultSet): SelectRoom {
+        val id = result.getInt(1)
+        val name = result.getString(2)
+        val current = result.getFloat(3)
+        val maxQuest = result.getString(4)
+        val bedType = result.getString(5)
+        val breakFast = result.getString(6)
+        val refundable = result.getString(7)
+        return SelectRoom(id, name, current, maxQuest, bedType, breakFast, refundable)
+    }
+
+    fun getRoomInfo(result: ResultSet): RoomInfo {
+        val id: Int = result.getInt(1)
+        val name: String = result.getString(2)
+        val guest: String = result.getString(3)
+        val size: String = result.getString(4)
+        val bed: String = result.getString(5)
+        val extra: String = result.getString(6)
+        val reschedule: String = result.getString(7)
+        return RoomInfo(id, name, guest, size, bed, extra, reschedule)
     }
 }

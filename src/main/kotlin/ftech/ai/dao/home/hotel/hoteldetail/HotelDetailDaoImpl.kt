@@ -1,10 +1,10 @@
-package ftech.ai.dao.home.hoteldetail
+package ftech.ai.dao.home.hotel.hoteldetail
 
 import ftech.ai.database.ChangeDatabase
 import ftech.ai.database.QuerySql
 import ftech.ai.model.*
 
-class DetailDaoImpl : IDetailDao {
+class HotelDetailDaoImpl : IHotelDetailDao {
     override fun hotelDetail(idHotel: Int): Response<HotelDetail> {
         val response = Response<HotelDetail>(Success.code, Success.msg)
         response.data = HotelDetail(
@@ -26,7 +26,6 @@ class DetailDaoImpl : IDetailDao {
         while (result.next()) {
             listImage.add(result.getString(1))
         }
-
         return listImage
     }
 

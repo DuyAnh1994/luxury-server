@@ -10,7 +10,6 @@ data class SelectRoom(
     val id_room: Int,
     val name: String,
     val current_price: Float,
-    val description: String,
     val max_guest: String,
     val bed_type: String,
     val break_fast: String,

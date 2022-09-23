@@ -1,7 +1,6 @@
 package ftech.ai.database
 
 import ftech.ai.model.*
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -10,6 +9,7 @@ import java.util.*
 object QuerySql {
     private const val tbUser: String = "travelluxury.user"
     private const val tbFlight: String = "travelluxury.flight"
+    private const val tbCity: String = "travelluxury.city"
     private const val tbPromotion: String = "travelluxury.promotion"
     private const val tbHotel: String = "travelluxury.hotel"
     private const val tbImageDetail: String = "travelluxury.image"
@@ -22,6 +22,9 @@ object QuerySql {
     private const val tbRoom: String = "travelluxury.room"
     private const val tbRoomDetail: String = "travelluxury.roomdetail"
     private const val tbRoomFacilities: String = "travelluxury.roomfacilities"
+    private const val tbFacilitiesRoom: String = "travelluxury.facilities"
+    private const val tbRoomFeature: String = "travelluxury.roomfeature"
+    private const val tbBathroom: String = "travelluxury.bathroom"
 
 
     fun checkEmail(email: String): String {
@@ -43,32 +46,23 @@ object QuerySql {
         return "Select * from ${tbFlight}"
     }
 
-    fun insertFlight(flight: Flight): String {
-        val stringDate = flight.date_flight
-        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH)
-        val date = LocalDate.parse(stringDate, formatter)
-        return "Insert Into ${tbFlight}(image,title,date) Values('${flight.image_flight}','${flight.title_flight}','${date}')"
-    }
-
     fun getPromotion(): String {
         return "Select * from ${tbPromotion}"
     }
 
-    fun insertPromotion(promotion: Promotion): String {
-        return "Insert Into ${tbPromotion}(image) Values('${promotion.image_promotion}')"
+    fun getCity(): String {
+        return "Select * from ${tbCity}"
     }
 
-    fun getHotel(): String {
-        return "Select * from ${tbHotel}"
+    fun sqlHotel(id: Int): String {
+        return ""
     }
 
-    fun insertHotel(hotel: Hotel): String {
-        return "Insert Into ${tbHotel}(name,image,accommodationPolicies,description,star) Values('${hotel.name_hotel}','${hotel.image_hotel}','${hotel.accommodationPolicies_hotel}','${hotel.description_hotel}','${hotel.star_home}')"
-    }
 
     fun sqlImageDetail(id: Int): String {
-        return "Select * From ${tbImageDetail} where ${tbImageDetail}.idHotel = '${id}'"
+        return "Select * From ${tbImageDetail} where ${tbImageDetail}.idHotel = '${id}' AND ${tbImageDetail}.idRoom = 0"
     }
+
 
     fun sqlRating(id: Int): String {
         return "Select * From ${tbRating} where ${tbRating}.idHotel = '${id}'"
@@ -105,7 +99,7 @@ object QuerySql {
     }
 
     fun sqlRoom(id: Int): String {
-        return "Select ${tbRoom}.roomId,${tbRoom}.name,${tbRoom}.currentPrice,${tbRoom}.description," +
+        return "Select ${tbRoom}.roomId,${tbRoom}.name,${tbRoom}.currentPrice," +
                 "${tbRoomDetail}.maxGuest,${tbRoomDetail}.bedType,${tbRoomDetail}.breakFast,${tbRoomDetail}.refundable " +
                 "from ${tbRoom} Inner join ${tbRoomDetail} On ${tbRoom}.roomId = ${tbRoomDetail}.idRoom where ${tbRoom}.idHotel = '${id}'"
     }
@@ -113,4 +107,36 @@ object QuerySql {
     fun sqlImageRoom(id: Int): String {
         return "Select ${tbImageDetail}.url,${tbImageDetail}.idRoom from ${tbImageDetail} where ${tbImageDetail}.idHotel = '${id}'"
     }
+
+    fun sqlRoomInfo(id: Int): String {
+        return "Select ${tbRoom}.roomId,${tbRoom}.name,${tbRoomDetail}.maxGuest," +
+                "${tbRoomDetail}.roomSize,${tbRoomDetail}.bedType,${tbRoomFacilities}.extraBenefit,${tbRoomFacilities}.reschedule " +
+                "from (${tbRoom} Inner join ${tbRoomDetail} On ${tbRoom}.roomId = ${tbRoomDetail}.idRoom ) Inner Join ${tbRoomFacilities}" +
+                " On ${tbRoom}.roomId = ${tbRoomFacilities}.idRoom where ${tbRoom}.roomId = '${id}'"
+    }
+
+    fun sqlImageRoomDetail(id: Int): String {
+        return "Select ${tbImageDetail}.url From ${tbImageDetail} Where ${tbImageDetail}.idRoom = '${id}'"
+    }
+
+    fun sqlRoomFeature(id: Int): String {
+        return "Select ${tbRoomFeature}.name from ${tbRoomFeature} where ${tbRoomFeature}.idRoom = '${id}'"
+    }
+
+    fun sqlRoomFacilities(id: Int): String {
+        return "Select ${tbFacilitiesRoom}.name from ${tbFacilitiesRoom} where ${tbFacilitiesRoom}.idRoom ='${id}'"
+    }
+
+    fun sqlBathroom(id: Int): String {
+        return "Select ${tbBathroom}.name from ${tbBathroom} where ${tbBathroom}.idRoom = '${id}'"
+    }
+
+    fun sqlListHotel(id: Int): String {
+        return "SELECT ${tbHotel}.hotelId, ${tbHotel}.name,${tbHotel}.star,${tbAddress}.detail,${tbRating}.point,${tbRating}.count , ${tbRoom}.currentPrice, ${tbImageDetail}.url " +
+                " from (((${tbHotel} inner join ${tbAddress} on ${tbHotel}.hotelId = ${tbAddress}.hotelId) inner join " +
+                " ${tbRating} on ${tbHotel}.hotelId = ${tbRating}.idHotel ) inner join ${tbRoom} on ${tbHotel}.hotelId = ${tbRoom}.idHotel ) inner join ${tbImageDetail} on ${tbHotel}.hotelId = ${tbImageDetail}.idHotelAvatar" +
+                " where ${tbHotel}.idCity = '${id}' AND ( ${tbRoom}.idHotel ,${tbRoom}.currentPrice )  IN (Select ${tbRoom}.idHotel, Min(${tbRoom}.currentPrice) from ${tbRoom} Group by ${tbRoom}.idHotel) "
+    }
+
+
 }

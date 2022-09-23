@@ -12,8 +12,10 @@ fun Application.configureRouting() {
 
     val apiRegister = DaoFactory.getRegisterDao()
     val apiHome = DaoFactory.getHomeDao()
-    val apiHotelDetail = DaoFactory.getDetailDao()
+    val apiHotelDetail = DaoFactory.getHotelDetailDao()
     val apiRoom = DaoFactory.getRoomDao()
+    val apiRoomDetail = DaoFactory.getRoomDetail()
+    val apiListHotel = DaoFactory.getListHotel()
     routing {
         post("/register") {
             val user = call.receive<User>()
@@ -31,24 +33,8 @@ fun Application.configureRouting() {
             call.respond(apiHome.getHome())
         }
 
-        post("/home/flight") {
-            val flight = call.receive<Flight>()
-            call.respond(apiHome.insertFlight(flight))
-        }
 
-
-        post("/home/promotion") {
-            val promotion = call.receive<Promotion>()
-            call.respond(apiHome.insertPromotion(promotion))
-        }
-
-
-        post("/home/hotel") {
-            val hotel = call.receive<Hotel>()
-            call.respond(apiHome.insertHotel(hotel))
-        }
-
-        get("home/detail/{id?}") {
+        get("home/hotel/detail/{id?}") {
             val id = (call.parameters["id"])!!.toInt()
             call.respond(apiHotelDetail.hotelDetail(id))
         }
@@ -56,6 +42,16 @@ fun Application.configureRouting() {
         get("home/room/{id?}") {
             val id = (call.parameters["id"])!!.toInt()
             call.respond(apiRoom.getRoom(id))
+        }
+
+        get("home/room/detail/{id?}") {
+            val id = (call.parameters["id"])!!.toInt()
+            call.respond(apiRoomDetail.getRoomDetail(id))
+        }
+
+        get ( "home/city/hotel/{id?}" ){
+            val id = (call.parameters["id"])!!.toInt()
+            call.respond(apiListHotel.getHotel(id))
         }
 
     }
