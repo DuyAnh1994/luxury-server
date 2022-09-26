@@ -59,7 +59,9 @@ object DataInfo {
         val bedType = result.getString(5)
         val breakFast = result.getString(6)
         val refundable = result.getString(7)
-        return SelectRoom(id, name, current, maxQuest, bedType, breakFast, refundable)
+        val formula: String = result.getString(8)
+        val sell: Int = result.getInt(9)
+        return SelectRoom(id, name, current, maxQuest, bedType, breakFast, refundable,formula,sell)
     }
 
     fun getRoomInfo(result: ResultSet): RoomInfo {
@@ -70,6 +72,8 @@ object DataInfo {
         val bed: String = result.getString(5)
         val extra: String = result.getString(6)
         val reschedule: String = result.getString(7)
-        return RoomInfo(id, name, guest, size, bed, extra, reschedule)
+        val formula: String = result.getString(8)
+        val sell: Int = result.getInt(9)
+        return RoomInfo(id, name, guest, size, bed, extra, reschedule,formula,sell)
     }
 }

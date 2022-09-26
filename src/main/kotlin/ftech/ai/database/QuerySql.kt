@@ -31,7 +31,7 @@ object QuerySql {
         return "select count(userID) as sl from ${tbUser} group by travelluxury.user.userName having travelluxury.user.userName = '${email}'"
     }
 
-    fun insertUser(user: User): String {
+    fun insertUser(user: UserRegister): String {
         val stringDate = user.birthday
         val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH)
         val birthday = LocalDate.parse(stringDate, formatter)
@@ -82,8 +82,7 @@ object QuerySql {
 
 
     fun sqlHotelInfo(id: Int): String {
-        return "Select ${tbHotel}.hotelId,${tbHotel}.name,${tbHotel}.star, ${tbAddress}.detail  From  ${tbHotel} INNER JOIN ${tbAddress} ON ${tbHotel}.hotelId = ${tbAddress}.hotelId" +
-                " where ${tbHotel}.hotelId = '${id}'"
+        return "Select ${tbHotel}.hotelId,${tbHotel}.name,${tbHotel}.star, ${tbAddress}.detail  From  ${tbHotel} INNER JOIN ${tbAddress} ON ${tbHotel}.hotelId = ${tbAddress}.hotelId" + " where ${tbHotel}.hotelId = '${id}'"
     }
 
     fun sqlFacilities(id: Int): String {
@@ -99,9 +98,12 @@ object QuerySql {
     }
 
     fun sqlRoom(id: Int): String {
-        return "Select ${tbRoom}.roomId,${tbRoom}.name,${tbRoom}.currentPrice," +
-                "${tbRoomDetail}.maxGuest,${tbRoomDetail}.bedType,${tbRoomDetail}.breakFast,${tbRoomDetail}.refundable " +
-                "from ${tbRoom} Inner join ${tbRoomDetail} On ${tbRoom}.roomId = ${tbRoomDetail}.idRoom where ${tbRoom}.idHotel = '${id}'"
+        return """
+                Select ${tbRoom}.roomId,${tbRoom}.name,${tbRoom}.currentPrice,
+                ${tbRoomDetail}.maxGuest,${tbRoomDetail}.bedType,${tbRoomDetail}.breakFast,${tbRoomDetail}.refundable, ${tbRoomDetail}.formula,${tbRoomDetail}.sell
+                from ${tbRoom} Inner join ${tbRoomDetail} On ${tbRoom}.roomId = ${tbRoomDetail}.idRoom where ${tbRoom}.idHotel = '${id}'
+        """.trimIndent()
+
     }
 
     fun sqlImageRoom(id: Int): String {
@@ -109,10 +111,13 @@ object QuerySql {
     }
 
     fun sqlRoomInfo(id: Int): String {
-        return "Select ${tbRoom}.roomId,${tbRoom}.name,${tbRoomDetail}.maxGuest," +
-                "${tbRoomDetail}.roomSize,${tbRoomDetail}.bedType,${tbRoomFacilities}.extraBenefit,${tbRoomFacilities}.reschedule " +
-                "from (${tbRoom} Inner join ${tbRoomDetail} On ${tbRoom}.roomId = ${tbRoomDetail}.idRoom ) Inner Join ${tbRoomFacilities}" +
-                " On ${tbRoom}.roomId = ${tbRoomFacilities}.idRoom where ${tbRoom}.roomId = '${id}'"
+        return """
+                 Select ${tbRoom}.roomId,${tbRoom}.name,${tbRoomDetail}.maxGuest,
+                ${tbRoomDetail}.roomSize,${tbRoomDetail}.bedType,${tbRoomFacilities}.extraBenefit,${tbRoomFacilities}.reschedule,${tbRoomDetail}.formula,${tbRoomDetail}.sell
+                from (${tbRoom} Inner join ${tbRoomDetail} On ${tbRoom}.roomId = ${tbRoomDetail}.idRoom ) Inner Join ${tbRoomFacilities}
+                 On ${tbRoom}.roomId = ${tbRoomFacilities}.idRoom where ${tbRoom}.roomId = '${id}'
+        """.trimIndent()
+
     }
 
     fun sqlImageRoomDetail(id: Int): String {
@@ -132,10 +137,14 @@ object QuerySql {
     }
 
     fun sqlListHotel(id: Int): String {
-        return "SELECT ${tbHotel}.hotelId, ${tbHotel}.name,${tbHotel}.star,${tbAddress}.detail,${tbRating}.point,${tbRating}.count , ${tbRoom}.currentPrice, ${tbImageDetail}.url " +
-                " from (((${tbHotel} inner join ${tbAddress} on ${tbHotel}.hotelId = ${tbAddress}.hotelId) inner join " +
-                " ${tbRating} on ${tbHotel}.hotelId = ${tbRating}.idHotel ) inner join ${tbRoom} on ${tbHotel}.hotelId = ${tbRoom}.idHotel ) inner join ${tbImageDetail} on ${tbHotel}.hotelId = ${tbImageDetail}.idHotelAvatar" +
-                " where ${tbHotel}.idCity = '${id}' AND ( ${tbRoom}.idHotel ,${tbRoom}.currentPrice )  IN (Select ${tbRoom}.idHotel, Min(${tbRoom}.currentPrice) from ${tbRoom} Group by ${tbRoom}.idHotel) "
+
+        return """
+            SELECT ${tbHotel}.hotelId, ${tbHotel}.name,${tbHotel}.star,${tbAddress}.detail,${tbRating}.point,${tbRating}.count , ${tbRoom}.currentPrice, ${tbImageDetail}.url 
+                             from (((${tbHotel} inner join ${tbAddress} on ${tbHotel}.hotelId = ${tbAddress}.hotelId) inner join 
+                            ${tbRating} on ${tbHotel}.hotelId = ${tbRating}.idHotel ) inner join ${tbRoom} on ${tbHotel}.hotelId = ${tbRoom}.idHotel ) inner join ${tbImageDetail} on ${tbHotel}.hotelId = ${tbImageDetail}.idHotelAvatar 
+                             where ${tbHotel}.idCity = '${id}' AND ( ${tbRoom}.idHotel ,${tbRoom}.currentPrice )  IN (Select ${tbRoom}.idHotel, Min(${tbRoom}.currentPrice) from ${tbRoom} Group by ${tbRoom}.idHotel) 
+        """.trimIndent()
+
     }
 
 

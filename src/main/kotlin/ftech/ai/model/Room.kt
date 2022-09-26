@@ -3,7 +3,7 @@ package ftech.ai.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Room(val selectRoom: SelectRoom, val listImage: MutableList<String>)
+data class Room(val room: SelectRoom, val list_image: MutableList<String>)
 
 @Serializable
 data class SelectRoom(
@@ -14,6 +14,8 @@ data class SelectRoom(
     val bed_type: String,
     val break_fast: String,
     val refundable: String,
+    val formula: String,
+    val sell: Int
 )
 
 @Serializable

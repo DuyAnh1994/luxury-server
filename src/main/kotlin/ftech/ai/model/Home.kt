@@ -4,9 +4,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Home(
-    val listFlight: MutableList<Flight>,
-    val listPromotion: MutableList<Promotion>,
-    val listCity: MutableList<City>
+    val list_flight: MutableList<Flight>,
+    val list_promotion: MutableList<Promotion>,
+    val list_city: MutableList<City>
 
 )
 

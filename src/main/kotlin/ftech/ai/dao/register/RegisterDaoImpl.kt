@@ -20,7 +20,7 @@ class RegisterDaoImpl : IRegisterDao {
         return listUser
     }
 
-    override fun insertUser(user: User): Response<MutableList<User>> {
+    override fun insertUser(user: UserRegister): Response<MutableList<User>> {
         val sqlCheck = QuerySql.checkEmail(user.user_name)
         var check = 0
         val result = ChangeDatabase.getData(sqlCheck)
@@ -31,15 +31,15 @@ class RegisterDaoImpl : IRegisterDao {
         return if (check != 1) {
             val sqlInsert = QuerySql.insertUser(user)
             if (ChangeDatabase.setData(sqlInsert) == "1") {
-                val response = Response<MutableList<User>>(ResponseSuccess.code, ResponseSuccess.msg)
+                val response = Response<MutableList<User>>( ResponseSuccess.CODE, ResponseSuccess.MSG)
                 response.data = getUser()
                 response
             } else {
-                Response(ResponseFail.code, ResponseFail.msg)
+                Response( ResponseFail.CODE, ResponseFail.MSG)
             }
 
         } else {
-            Response(ResponseErrorEmail.code, ResponseErrorEmail.msg)
+            Response( ResponseErrorEmail.CODE, ResponseErrorEmail.MSG)
         }
     }
 
@@ -54,11 +54,11 @@ class RegisterDaoImpl : IRegisterDao {
         }
 
         return if (listUser.size != 0) {
-            val response = Response<User>(ResponseLoginSuccess.code, ResponseLoginSuccess.msg)
+            val response = Response<User>( ResponseLoginSuccess.CODE, ResponseLoginSuccess.MSG)
             response.data = listUser[0]
             response
         } else {
-            Response(ResponseLoginFail.code, ResponseLoginFail.msg)
+            Response( ResponseLoginFail.CODE, ResponseLoginFail.MSG)
         }
 
     }

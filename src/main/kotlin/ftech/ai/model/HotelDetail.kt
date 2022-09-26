@@ -4,12 +4,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class HotelDetail(
-    val listImage: MutableList<String>,
-    val hotelInfo: HotelInfo,
+    val list_image: MutableList<String>,
+    val hotel_info: HotelInfo,
     val rating: Rating,
-    val listFacilities: MutableList<String>,
-    val listPolicies: MutableList<Policies>,
-    val listDescription: MutableList<String>
+    val list_facilities: MutableList<String>,
+    val list_policies: MutableList<Policies>,
+    val list_description: MutableList<String>
 )
 
 @Serializable

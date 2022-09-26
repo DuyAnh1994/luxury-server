@@ -6,7 +6,7 @@ import ftech.ai.model.*
 
 class HotelDetailDaoImpl : IHotelDetailDao {
     override fun hotelDetail(idHotel: Int): Response<HotelDetail> {
-        val response = Response<HotelDetail>(Success.code, Success.msg)
+        val response = Response<HotelDetail>( Success.CODE, Success.MSG)
         response.data = HotelDetail(
             getImageDetail(idHotel),
             getHotelInfo(idHotel),

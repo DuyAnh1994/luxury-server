@@ -15,7 +15,7 @@ class HotelDaoImpl : IHotelDao {
         while (result.next()) {
             list_hotel.add(DataInfo.getHotel(result))
         }
-        val response = Response<MutableList<Hotel>>(Success.code, Success.msg)
+        val response = Response<MutableList<Hotel>>( Success.CODE, Success.MSG)
         response.data = list_hotel
         return response
     }

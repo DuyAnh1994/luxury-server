@@ -17,39 +17,39 @@ fun Application.configureRouting() {
     val apiRoomDetail = DaoFactory.getRoomDetail()
     val apiListHotel = DaoFactory.getListHotel()
     routing {
-        post("/register") {
-            val user = call.receive<User>()
+        post("/v1/register") {
+            val user = call.receive<UserRegister>()
             call.respond(apiRegister.insertUser(user))
         }
 
-        get("/login/{userName?}/{password?}") {
-            val userName = call.parameters["userName"]
+        post("/v1/login/{username?}/{password?}") {
+            val userName = call.parameters["username"]
             val password = call.parameters["password"]
 
             call.respond(apiRegister.checkLogin(userName!!, password!!))
         }
 
-        get("/home") {
+        get("/v1/home") {
             call.respond(apiHome.getHome())
         }
 
 
-        get("home/hotel/detail/{id?}") {
+        get("v1/home/hotel/detail/{id?}") {
             val id = (call.parameters["id"])!!.toInt()
             call.respond(apiHotelDetail.hotelDetail(id))
         }
 
-        get("home/room/{id?}") {
+        get("v1/home/room/{id?}") {
             val id = (call.parameters["id"])!!.toInt()
             call.respond(apiRoom.getRoom(id))
         }
 
-        get("home/room/detail/{id?}") {
+        get("v1/home/room/detail/{id?}") {
             val id = (call.parameters["id"])!!.toInt()
             call.respond(apiRoomDetail.getRoomDetail(id))
         }
 
-        get ( "home/city/hotel/{id?}" ){
+        get("v1/home/city/hotel/{id?}") {
             val id = (call.parameters["id"])!!.toInt()
             call.respond(apiListHotel.getHotel(id))
         }

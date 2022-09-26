@@ -28,12 +28,12 @@ class RoomDaoImpl : IRoomDao {
         }
 
         if (listRoom.size > 0) {
-            val response = Response<MutableList<Room>>(Success.code, Success.msg)
+            val response = Response<MutableList<Room>>( Success.CODE, Success.MSG)
             response.data = listRoom
 
             return response
         }
-        return Response(Fail.code, Fail.msg)
+        return Response( Fail.CODE, Fail.MSG)
 
     }
 

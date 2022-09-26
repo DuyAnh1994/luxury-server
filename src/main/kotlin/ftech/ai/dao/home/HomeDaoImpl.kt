@@ -10,33 +10,33 @@ class HomeDaoImpl : IHomeDao {
         val sqlFlight = QuerySql.getFlight()
         val sqlPromotion = QuerySql.getPromotion()
         val sqlCity = QuerySql.getCity()
-        val listFlight: MutableList<Flight> = ArrayList()
-        val listPromotion: MutableList<Promotion> = ArrayList()
-        val listCity: MutableList<City> = ArrayList()
+        val list_flight: MutableList<Flight> = ArrayList()
+        val list_promotion: MutableList<Promotion> = ArrayList()
+        val list_city: MutableList<City> = ArrayList()
 
         val resultFlight = ChangeDatabase.getData(sqlFlight)
         while (resultFlight.next()) {
-            listFlight.add(DataInfo.getFlight(resultFlight))
+            list_flight.add(DataInfo.getFlight(resultFlight))
         }
 
         val resultPromotion = ChangeDatabase.getData(sqlPromotion)
         while (resultPromotion.next()) {
-            listPromotion.add(DataInfo.getPromotion(resultPromotion))
+            list_promotion.add(DataInfo.getPromotion(resultPromotion))
         }
 
         val resultCity = ChangeDatabase.getData(sqlCity)
         while (resultCity.next()) {
-            listCity.add(DataInfo.getCity(resultCity))
+            list_city.add(DataInfo.getCity(resultCity))
         }
 
-        return if (listFlight.size > 0 && listPromotion.size > 0 && listCity.size > 0) {
-            val home = Home(listFlight, listPromotion, listCity)
-            val response = Response<Home>(Success.code, Success.msg)
+        return if (list_flight.size > 0 && list_promotion.size > 0 && list_city.size > 0) {
+            val home = Home(list_flight, list_promotion, list_city)
+            val response = Response<Home>( Success.CODE, Success.MSG)
             response.data = home
 
             response
         } else {
-            Response(Fail.code, Fail.msg)
+            Response( Fail.CODE, Fail.MSG)
         }
     }
 

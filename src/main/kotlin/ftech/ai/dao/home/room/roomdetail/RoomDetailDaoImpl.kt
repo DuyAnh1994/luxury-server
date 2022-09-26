@@ -15,7 +15,7 @@ class RoomDetailDaoImpl : IRoomDetailDao {
         val listRoomFeature: MutableList<String> = listRoomFeature(idRoom)
         val listRoomFacilities: MutableList<String> = listRoomFacilities(idRoom)
         val listBathroom: MutableList<String> = listBathroom(idRoom)
-        val response = Response<RoomDetail>(Success.code, Success.msg)
+        val response = Response<RoomDetail>( Success.CODE, Success.MSG)
         response.data = RoomDetail(listImageRoom, roomInfo, listRoomFeature, listRoomFacilities, listBathroom)
         return response
     }
