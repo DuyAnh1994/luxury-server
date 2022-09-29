@@ -1,9 +1,8 @@
-POST http://127.0.0.1:8083/register
+POST http://127.0.0.1:8086/register
 Content-Type: application/json
 
 {
-  "userId": "1",
-  "user_name": "Vucuong1111111tnnd@gmail.com",
+  "user_name": "Vucuong11132tnnd@gmail.com",
   "password": "123456",
   "full_name": "VuQuocCuong",
   "gender": "Nam",
@@ -12,8 +11,39 @@ Content-Type: application/json
 }
 
 ###
-GET http://127.0.0.1:8083/login/Vucuong42tnnd@gmail.com/123456
+GET http://127.0.0.1:8085/v1/home
 Accept: application/json
+
+###
+POST http://127.0.0.1:8083/v1/home/hotel
+Content-Type: application/json
+
+{
+  "id_hotel": "1",
+  "name_hotel": "name3",
+  "image_hotel": "image3",
+  "accommodationPolicies_hotel": "acc3",
+  "description_hotel": "des3",
+  "star_home": "4.7",
+  "id_city": "1"
+}
+
+###
+GET http://127.0.0.1:8085/v1/home/hotel/detail/4
+Accept: application/json
+
+###
+GET http://127.0.0.1:8086/v1/home/room/4
+Accept: application/json
+
+###
+GET http://127.0.0.1:8085/v1/home/room/detail/5
+Accept: application/json
+
+###
+GET http://127.0.0.1:8086/v1/home/city/hotel/1
+Accept: application/json
+
 
 
 
