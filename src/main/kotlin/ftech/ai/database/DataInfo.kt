@@ -2,6 +2,7 @@ package ftech.ai.database
 
 import ftech.ai.model.*
 import java.sql.ResultSet
+import java.util.*
 
 object DataInfo {
     fun getUser(result: ResultSet): User {
@@ -20,7 +21,7 @@ object DataInfo {
         val flightId: Int = result.getInt(1)
         val image: String = result.getString(2)
         val title: String = result.getString(3)
-        val date: String = result.getDate(4).toString()
+        val date: String = result.getString(4)
 
         return Flight(flightId, image, title, date)
     }
@@ -61,7 +62,7 @@ object DataInfo {
         val refundable = result.getString(7)
         val formula: String = result.getString(8)
         val sell: Int = result.getInt(9)
-        return SelectRoom(id, name, current, maxQuest, bedType, breakFast, refundable,formula,sell)
+        return SelectRoom(id, name, current, maxQuest, bedType, breakFast, refundable, formula, sell)
     }
 
     fun getRoomInfo(result: ResultSet): RoomInfo {
@@ -74,6 +75,19 @@ object DataInfo {
         val reschedule: String = result.getString(7)
         val formula: String = result.getString(8)
         val sell: Int = result.getInt(9)
-        return RoomInfo(id, name, guest, size, bed, extra, reschedule,formula,sell)
+        return RoomInfo(id, name, guest, size, bed, extra, reschedule, formula, sell)
+    }
+
+    fun getBookingInfo(result: ResultSet): BookingInfo {
+        val bookingId: Int = result.getInt(1)
+        val nameCity: String = result.getString(2)
+        val nameHotel: String = result.getString(3)
+        val nameRoom: String = result.getString(4)
+        val checkin: Date = result.getDate(5)
+        val checkout: Date = result.getDate(6)
+        val priceRoom: Double = result.getDouble(7)
+        val status: Int = result.getInt(8)
+        val msgStatus: String = result.getString(9)
+        return BookingInfo(bookingId, nameCity, nameHotel, nameRoom, checkin, checkout, priceRoom, status, msgStatus)
     }
 }

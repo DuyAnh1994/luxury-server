@@ -13,7 +13,7 @@ class HotelDaoImpl : IHotelDao {
         val result = ChangeDatabase.getData(sqlListHotel)
         val list_hotel: MutableList<Hotel> = ArrayList()
         while (result.next()) {
-            list_hotel.add(DataInfo.getHotel(result))
+            list_hotel.add(DataInfo.getHotel( result))
         }
         val response = Response<MutableList<Hotel>>( Success.CODE, Success.MSG)
         response.data = list_hotel
