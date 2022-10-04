@@ -25,6 +25,8 @@ object QuerySql {
     private const val tbFacilitiesRoom: String = "travelluxury.facilities"
     private const val tbRoomFeature: String = "travelluxury.roomfeature"
     private const val tbBathroom: String = "travelluxury.bathroom"
+    private const val tbBooking: String = "travelluxury.booking"
+    private const val tbPayment: String = "travelluxury.payment"
 
 
     fun checkEmail(email: String): String {
@@ -147,5 +149,31 @@ object QuerySql {
 
     }
 
+    fun sqlListBooking(id: Int): String {
+        return "select userID,roomID, checkin, checkout from travelluxury.booking   where travelluxury.booking.roomID = '${id}' order by travelluxury.booking.checkout desc "
+    }
 
+    fun sqlInsertBooking(booking: Booking): String {
+        return """
+          insert into travelluxury.booking(userID,roomID,status,mgsStatus,checkin,checkout)
+           value('${booking.user_id}','${booking.room_id}','1','Chờ xác nhận','${booking.checkin}','${booking.checkout}')
+     """.trimIndent()
+    }
+
+    fun sqlBooking(id: Int): String {
+        return """
+           select bookingID,travelluxury.city.name,travelluxury.hotel.name,travelluxury.room.name,travelluxury.hotel.image,checkin,checkout,currentPrice,status,mgsStatus from travelluxury.booking inner join travelluxury.room on travelluxury.booking.roomID = travelluxury.room.roomId inner join
+           travelluxury.hotel on travelluxury.room.idHotel = travelluxury.hotel.hotelId inner join travelluxury.city on travelluxury.city.cityId = travelluxury.hotel.idCity where travelluxury.booking.userID = '${id}'
+        """.trimIndent()
+    }
+
+    fun sqlUpdate(status: Int, msgStatus: String, idBooking: Int): String {
+        return """
+            update travelluxury.booking set travelluxury.booking.status = '${status}', travelluxury.booking.mgsStatus = '${msgStatus}' where travelluxury.booking.bookingID = '${idBooking}';
+        """.trimIndent()
+    }
+
+    fun sqlHistory(id: Int): String {
+        return "select * from travelluxury.payment where travelluxury.payment.userID = '${id}' "
+    }
 }

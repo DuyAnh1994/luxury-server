@@ -44,7 +44,16 @@ Accept: application/json
 GET http://127.0.0.1:8086/v1/home/city/hotel/1
 Accept: application/json
 
+###
+POST http://127.0.0.1:8087/v1/home/hotel/booking
+Content-Type: application/json
 
+{
+  "userId": "56",
+  "roomId": "114",
+  "checkin": " 2022-12-10",
+  "checkout": "2022-12-11"
+}
 
 
 

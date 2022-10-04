@@ -1,17 +1,31 @@
 package ftech.ai.model
 
+import kotlinx.serialization.Serializable
 import java.util.Date
 
-data class Booking(val userId: Int, val roomId: Int, val checkin: String, val checkout: String)
+@Serializable
+data class Booking(val user_id: Int, val room_id: Int, val checkin: String, val checkout: String)
 
+@Serializable
 data class BookingInfo(
-    val bookingId: Int,
-    val nameCity: String,
-    val nameHotel: String,
-    val nameRoom: String,
-    val checkin: Date,
-    val checkout: Date,
-    val priceRoom: Double,
+    val booking_id: Int,
+    val name_city: String,
+    val name_hotel: String,
+    val name_room: String,
+    val image_room: String,
+    val check_in: String,
+    val check_out: String,
+    val price_room: Double,
     val status: Int,
-    val msgStatus: String
+    val msg_tatus: String
+)
+
+@Serializable
+data class Payment(
+    val payment_id: Int,
+    val user_id: Int,
+    val room_id: Int,
+    val check_in: String,
+    val checkout: String,
+    val price: Double
 )

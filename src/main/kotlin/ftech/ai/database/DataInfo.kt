@@ -83,11 +83,34 @@ object DataInfo {
         val nameCity: String = result.getString(2)
         val nameHotel: String = result.getString(3)
         val nameRoom: String = result.getString(4)
-        val checkin: Date = result.getDate(5)
-        val checkout: Date = result.getDate(6)
-        val priceRoom: Double = result.getDouble(7)
-        val status: Int = result.getInt(8)
-        val msgStatus: String = result.getString(9)
-        return BookingInfo(bookingId, nameCity, nameHotel, nameRoom, checkin, checkout, priceRoom, status, msgStatus)
+        val imageRoom: String = result.getString(5)
+        val checkin: String = result.getDate(6).toString()
+        val checkout: String = result.getDate(7).toString()
+        val priceRoom: Double = result.getDouble(8)
+        val status: Int = result.getInt(9)
+        val msgStatus: String = result.getString(10)
+        return BookingInfo(
+            bookingId, nameCity, nameHotel, nameRoom, imageRoom, checkin, checkout, priceRoom, status, msgStatus
+        )
     }
+
+    fun getBooking(result: ResultSet): Booking {
+        val userId: Int = result.getInt(1)
+        val roomId: Int = result.getInt(2)
+        val checkin: String = result.getDate(3).toString()
+        val checkout: String = result.getDate(4).toString()
+        return Booking(userId, roomId, checkin, checkout)
+    }
+
+    fun getHistory(result: ResultSet): Payment {
+        val payment_id: Int = result.getInt(1)
+        val user_id: Int = result.getInt(2)
+        val room_id: Int = result.getInt(3)
+        val check_in: String = result.getDate(4).toString()
+        val checkout: String = result.getDate(5).toString()
+        val price: Double = result.getDouble(6)
+
+        return Payment(payment_id, user_id, room_id, check_in, checkout, price)
+    }
+
 }
