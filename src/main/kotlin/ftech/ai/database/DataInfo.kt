@@ -2,6 +2,7 @@ package ftech.ai.database
 
 import ftech.ai.model.*
 import java.sql.ResultSet
+import java.util.*
 
 object DataInfo {
     fun getUser(result: ResultSet): User {
@@ -20,7 +21,7 @@ object DataInfo {
         val flightId: Int = result.getInt(1)
         val image: String = result.getString(2)
         val title: String = result.getString(3)
-        val date: String = result.getDate(4).toString()
+        val date: String = result.getString(4)
 
         return Flight(flightId, image, title, date)
     }
@@ -61,7 +62,7 @@ object DataInfo {
         val refundable = result.getString(7)
         val formula: String = result.getString(8)
         val sell: Int = result.getInt(9)
-        return SelectRoom(id, name, current, maxQuest, bedType, breakFast, refundable,formula,sell)
+        return SelectRoom(id, name, current, maxQuest, bedType, breakFast, refundable, formula, sell)
     }
 
     fun getRoomInfo(result: ResultSet): RoomInfo {
@@ -74,6 +75,42 @@ object DataInfo {
         val reschedule: String = result.getString(7)
         val formula: String = result.getString(8)
         val sell: Int = result.getInt(9)
-        return RoomInfo(id, name, guest, size, bed, extra, reschedule,formula,sell)
+        return RoomInfo(id, name, guest, size, bed, extra, reschedule, formula, sell)
     }
+
+    fun getBookingInfo(result: ResultSet): BookingInfo {
+        val bookingId: Int = result.getInt(1)
+        val nameCity: String = result.getString(2)
+        val nameHotel: String = result.getString(3)
+        val nameRoom: String = result.getString(4)
+        val imageRoom: String = result.getString(5)
+        val checkin: String = result.getDate(6).toString()
+        val checkout: String = result.getDate(7).toString()
+        val priceRoom: Double = result.getDouble(8)
+        val status: Int = result.getInt(9)
+        val msgStatus: String = result.getString(10)
+        return BookingInfo(
+            bookingId, nameCity, nameHotel, nameRoom, imageRoom, checkin, checkout, priceRoom, status, msgStatus
+        )
+    }
+
+    fun getBooking(result: ResultSet): Booking {
+        val userId: Int = result.getInt(1)
+        val roomId: Int = result.getInt(2)
+        val checkin: String = result.getDate(3).toString()
+        val checkout: String = result.getDate(4).toString()
+        return Booking(userId, roomId, checkin, checkout)
+    }
+
+    fun getHistory(result: ResultSet): Payment {
+        val payment_id: Int = result.getInt(1)
+        val user_id: Int = result.getInt(2)
+        val room_id: Int = result.getInt(3)
+        val check_in: String = result.getDate(4).toString()
+        val checkout: String = result.getDate(5).toString()
+        val price: Double = result.getDouble(6)
+
+        return Payment(payment_id, user_id, room_id, check_in, checkout, price)
+    }
+
 }

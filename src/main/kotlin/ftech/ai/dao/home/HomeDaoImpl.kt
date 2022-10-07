@@ -31,12 +31,12 @@ class HomeDaoImpl : IHomeDao {
 
         return if (list_flight.size > 0 && list_promotion.size > 0 && list_city.size > 0) {
             val home = Home(list_flight, list_promotion, list_city)
-            val response = Response<Home>( Success.CODE, Success.MSG)
+            val response = Response<Home>(Success.CODE, Success.MSG)
             response.data = home
 
             response
         } else {
-            Response( Fail.CODE, Fail.MSG)
+            Response(Fail.CODE, Fail.MSG)
         }
     }
 

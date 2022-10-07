@@ -8,13 +8,17 @@ import ftech.ai.model.*
 class RoomDaoImpl : IRoomDao {
     override fun getRoom(idHotel: Int): Response<MutableList<Room>> {
         val sqlRoom = QuerySql.sqlRoom(idHotel)
-        val result = ChangeDatabase.getData(sqlRoom)
+        return baseRoom(sqlRoom)
+    }
+
+    override fun baseRoom(sql: String): Response<MutableList<Room>> {
+        val result = ChangeDatabase.getData(sql)
         val listSelectRoom: MutableList<SelectRoom> = ArrayList()
         while (result.next()) {
             listSelectRoom.add(DataInfo.getRoom(result))
         }
 
-        val listImage: MutableList<ImageRoom> = getImage(idHotel)
+        val listImage: MutableList<ImageRoom> = getImage()
         val listRoom: MutableList<Room> = ArrayList()
         for (selectRoom: SelectRoom in listSelectRoom) {
             val listImageRoom: MutableList<String> = ArrayList()
@@ -27,24 +31,20 @@ class RoomDaoImpl : IRoomDao {
 
         }
 
-        if (listRoom.size > 0) {
-            val response = Response<MutableList<Room>>( Success.CODE, Success.MSG)
-            response.data = listRoom
-
-            return response
-        }
-        return Response( Fail.CODE, Fail.MSG)
+        val response = Response<MutableList<Room>>(Success.CODE, Success.MSG)
+        response.data = listRoom
+        return response
 
     }
 
-    override fun getImage(idHotel: Int): MutableList<ImageRoom> {
-        val sqlImage = QuerySql.sqlImageRoom(idHotel)
+
+    override fun getImage(): MutableList<ImageRoom> {
+        val sqlImage = QuerySql.sqlImageRoom()
         val resultImage = ChangeDatabase.getData(sqlImage)
         val listImage: MutableList<ImageRoom> = ArrayList()
         while (resultImage.next()) {
             listImage.add(ImageRoom(resultImage.getString(1), resultImage.getInt(2)))
         }
-
         return listImage
     }
 }

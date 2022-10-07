@@ -25,6 +25,8 @@ object QuerySql {
     private const val tbFacilitiesRoom: String = "travelluxury.facilities"
     private const val tbRoomFeature: String = "travelluxury.roomfeature"
     private const val tbBathroom: String = "travelluxury.bathroom"
+    private const val tbBooking: String = "travelluxury.booking"
+    private const val tbPayment: String = "travelluxury.payment"
 
 
     fun checkEmail(email: String): String {
@@ -98,6 +100,8 @@ object QuerySql {
     }
 
     fun sqlRoom(id: Int): String {
+
+
         return """
                 Select ${tbRoom}.roomId,${tbRoom}.name,${tbRoom}.currentPrice,
                 ${tbRoomDetail}.maxGuest,${tbRoomDetail}.bedType,${tbRoomDetail}.breakFast,${tbRoomDetail}.refundable, ${tbRoomDetail}.formula,${tbRoomDetail}.sell
@@ -106,8 +110,23 @@ object QuerySql {
 
     }
 
-    fun sqlImageRoom(id: Int): String {
-        return "Select ${tbImageDetail}.url,${tbImageDetail}.idRoom from ${tbImageDetail} where ${tbImageDetail}.idHotel = '${id}'"
+    fun sqlRoomSearch(searchRoom: SearchRoom, page: Int): String {
+
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH)
+        val checkinDate = LocalDate.parse(searchRoom.checkin, formatter)
+        val checkoutDate = LocalDate.parse(searchRoom.checkout, formatter)
+
+        return """
+            Select roomId, travelluxury.room.name, travelluxury.room.currentPrice,
+            travelluxury.roomdetail.maxGuest,travelluxury.roomdetail.bedType,travelluxury.roomdetail.breakFast,travelluxury.roomdetail.refundable, travelluxury.roomdetail.formula,travelluxury.roomdetail.sell
+            from travelluxury.room Inner join  travelluxury.roomdetail On travelluxury.room.roomId = travelluxury.roomdetail.idRoom where  travelluxury.room.idHotel = '${searchRoom.idHotel}' AND travelluxury.room.roomId NOT IN 
+            (select travelluxury.booking.roomID from  travelluxury.booking  where  (checkin <= '${checkoutDate}' and  '${checkoutDate}' <= checkout) or ( '${checkinDate}' <= checkin and '${checkoutDate}' >= checkout) or (checkin <= '${checkinDate}' and '${checkinDate}' <= checkout)) limit 5 offset ${page}
+        """.trimIndent()
+    }
+
+
+    fun sqlImageRoom(): String {
+        return "Select ${tbImageDetail}.url,${tbImageDetail}.idRoom from ${tbImageDetail} "
     }
 
     fun sqlRoomInfo(id: Int): String {
@@ -119,6 +138,7 @@ object QuerySql {
         """.trimIndent()
 
     }
+
 
     fun sqlImageRoomDetail(id: Int): String {
         return "Select ${tbImageDetail}.url From ${tbImageDetail} Where ${tbImageDetail}.idRoom = '${id}'"
@@ -139,13 +159,57 @@ object QuerySql {
     fun sqlListHotel(id: Int): String {
 
         return """
-            SELECT ${tbHotel}.hotelId, ${tbHotel}.name,${tbHotel}.star,${tbAddress}.detail,${tbRating}.point,${tbRating}.count , ${tbRoom}.currentPrice, ${tbImageDetail}.url 
-                             from (((${tbHotel} inner join ${tbAddress} on ${tbHotel}.hotelId = ${tbAddress}.hotelId) inner join 
-                            ${tbRating} on ${tbHotel}.hotelId = ${tbRating}.idHotel ) inner join ${tbRoom} on ${tbHotel}.hotelId = ${tbRoom}.idHotel ) inner join ${tbImageDetail} on ${tbHotel}.hotelId = ${tbImageDetail}.idHotelAvatar 
+            SELECT ${tbHotel}.hotelId, ${tbHotel}.name,${tbHotel}.star,${tbAddress}.detail,${tbRating}.point,${tbRating}.count , ${tbRoom}.currentPrice, ${tbHotel}.image 
+                             from ((${tbHotel} inner join ${tbAddress} on ${tbHotel}.hotelId = ${tbAddress}.hotelId) inner join 
+                            ${tbRating} on ${tbHotel}.hotelId = ${tbRating}.idHotel ) inner join ${tbRoom} on ${tbHotel}.hotelId = ${tbRoom}.idHotel 
                              where ${tbHotel}.idCity = '${id}' AND ( ${tbRoom}.idHotel ,${tbRoom}.currentPrice )  IN (Select ${tbRoom}.idHotel, Min(${tbRoom}.currentPrice) from ${tbRoom} Group by ${tbRoom}.idHotel) 
+                          
         """.trimIndent()
 
     }
 
+    fun sqlHotelSearch(searchHotel: SearchHotel, page: Int): String {
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH)
+        val checkinDate = LocalDate.parse(searchHotel.checkin, formatter)
+        val checkoutDate = LocalDate.parse(searchHotel.checkout, formatter)
+        return """
+       SELECT distinct travelluxury.hotel.hotelId, travelluxury.hotel.name,travelluxury.hotel.star,address.detail,travelluxury.rating.point,travelluxury.rating.count , travelluxury.room.currentPrice, travelluxury.hotel.image 
+                             from (((travelluxury.hotel inner join travelluxury.address on travelluxury.hotel.hotelId = travelluxury.address.hotelId) inner join 
+                            travelluxury.rating on travelluxury.hotel.hotelId = travelluxury.rating.idHotel ) inner join travelluxury.room on travelluxury.hotel.hotelId = travelluxury.room.idHotel) inner join
+                            ( Select distinct travelluxury.room.idHotel from travelluxury.room Inner join  travelluxury.roomdetail On travelluxury.room.roomId = travelluxury.roomdetail.idRoom where  travelluxury.room.roomId NOT IN 
+            (select travelluxury.booking.roomID from  travelluxury.booking  where  (checkin <= '${checkoutDate}' and  '${checkoutDate}' <= checkout) or ( '${checkinDate}' <= checkin and '${checkoutDate}' >= checkout) or (checkin <= '${checkinDate}' and '${checkinDate}' <= checkout)) ) as hotel2 on travelluxury.hotel.hotelId = hotel2.idHotel
+                             where travelluxury.hotel.idCity = '${searchHotel.idCity}' AND ( travelluxury.room.idHotel ,travelluxury.room.currentPrice )  IN (Select  travelluxury.room.idHotel, Min( travelluxury.room.currentPrice) from  travelluxury.room Group by  travelluxury.room.idHotel )  limit 5 offset ${page} 			
+          
+           
+        """.trimIndent()
 
+    }
+
+    fun sqlListBooking(id: Int): String {
+        return "select userID,roomID, checkin, checkout from travelluxury.booking   where travelluxury.booking.roomID = '${id}' order by travelluxury.booking.checkout desc "
+    }
+
+    fun sqlInsertBooking(booking: Booking): String {
+        return """
+          insert into travelluxury.booking(userID,roomID,status,mgsStatus,checkin,checkout)
+           value('${booking.user_id}','${booking.room_id}','1','Chờ xác nhận','${booking.checkin}','${booking.checkout}')
+     """.trimIndent()
+    }
+
+    fun sqlBooking(id: Int, offset: Int): String {
+        return """
+           select bookingID,travelluxury.city.name,travelluxury.hotel.name,travelluxury.room.name,travelluxury.hotel.image,checkin,checkout,currentPrice,status,mgsStatus from travelluxury.booking inner join travelluxury.room on travelluxury.booking.roomID = travelluxury.room.roomId inner join
+           travelluxury.hotel on travelluxury.room.idHotel = travelluxury.hotel.hotelId inner join travelluxury.city on travelluxury.city.cityId = travelluxury.hotel.idCity where travelluxury.booking.userID = '${id}' limit 5 offset ${offset}
+        """.trimIndent()
+    }
+
+    fun sqlUpdate(status: Int, msgStatus: String, idBooking: Int): String {
+        return """
+            update travelluxury.booking set travelluxury.booking.status = '${status}', travelluxury.booking.mgsStatus = '${msgStatus}' where travelluxury.booking.bookingID = '${idBooking}';
+        """.trimIndent()
+    }
+
+    fun sqlHistory(id: Int): String {
+        return "select * from travelluxury.payment where travelluxury.payment.userID = '${id}' "
+    }
 }
