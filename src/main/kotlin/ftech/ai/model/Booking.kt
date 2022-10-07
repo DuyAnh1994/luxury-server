@@ -1,7 +1,6 @@
 package ftech.ai.model
 
 import kotlinx.serialization.Serializable
-import java.util.Date
 
 @Serializable
 data class Booking(val user_id: Int, val room_id: Int, val checkin: String, val checkout: String)
@@ -17,7 +16,7 @@ data class BookingInfo(
     val check_out: String,
     val price_room: Double,
     val status: Int,
-    val msg_tatus: String
+    val msg_status: String
 )
 
 @Serializable
@@ -29,3 +28,11 @@ data class Payment(
     val checkout: String,
     val price: Double
 )
+
+data class ImageInsert(val url: String, val id: Int)
+
+@Serializable
+data class SearchHotel(val idCity: Int, val checkin: String, val checkout: String, val default: Int)
+
+@Serializable
+data class SearchRoom(val idHotel: Int, val checkin: String, val checkout: String, val default: Int)

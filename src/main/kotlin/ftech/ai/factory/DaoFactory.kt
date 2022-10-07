@@ -2,6 +2,8 @@ package ftech.ai.factory
 
 import ftech.ai.dao.booking.BookingDaoImpl
 import ftech.ai.dao.booking.IBookingDao
+import ftech.ai.dao.booking.search.ISearchDao
+import ftech.ai.dao.booking.search.SearchDaoImpl
 import ftech.ai.dao.home.HomeDaoImpl
 import ftech.ai.dao.home.IHomeDao
 import ftech.ai.dao.home.hotel.HotelDaoImpl
@@ -25,6 +27,7 @@ object DaoFactory {
     private val roomDetailDaoImpl = RoomDetailDaoImpl()
     private val hotelDaoImpl = HotelDaoImpl()
     private val bookingDaoImpl = BookingDaoImpl()
+    private val searchDaoImpl = SearchDaoImpl()
     fun getRegisterDao(): IRegisterDao {
         return registerDaoImpl
     }
@@ -51,6 +54,10 @@ object DaoFactory {
 
     fun getListBooking(): IBookingDao {
         return bookingDaoImpl;
+    }
+
+    fun getSearchBook(): ISearchDao {
+        return searchDaoImpl
     }
 
 

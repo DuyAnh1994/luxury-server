@@ -10,13 +10,18 @@ import ftech.ai.model.Success
 class HotelDaoImpl : IHotelDao {
     override fun getHotel(idCity: Int): Response<MutableList<Hotel>> {
         val sqlListHotel = QuerySql.sqlListHotel(idCity)
-        val result = ChangeDatabase.getData(sqlListHotel)
+        return baseHotel(sqlListHotel)
+    }
+
+    override fun baseHotel(sql: String): Response<MutableList<Hotel>> {
+        val result = ChangeDatabase.getData(sql)
         val list_hotel: MutableList<Hotel> = ArrayList()
         while (result.next()) {
-            list_hotel.add(DataInfo.getHotel( result))
+            list_hotel.add(DataInfo.getHotel(result))
         }
-        val response = Response<MutableList<Hotel>>( Success.CODE, Success.MSG)
+        val response = Response<MutableList<Hotel>>(Success.CODE, Success.MSG)
         response.data = list_hotel
         return response
     }
+
 }

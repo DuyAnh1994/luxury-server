@@ -7,5 +7,6 @@ import ftech.ai.model.Room
 
 interface IRoomDao {
     fun getRoom(idHotel: Int): Response<MutableList<Room>>
-    fun getImage(idHotel: Int): MutableList<ImageRoom>
+    fun baseRoom(sql: String): Response<MutableList<Room>>
+    fun getImage(): MutableList<ImageRoom>
 }

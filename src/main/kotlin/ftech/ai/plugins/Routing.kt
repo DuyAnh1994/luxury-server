@@ -20,6 +20,8 @@ fun Application.configureRouting() {
     val apiRoomDetail = DaoFactory.getRoomDetail()
     val apiListHotel = DaoFactory.getListHotel()
     val apiListBooking = DaoFactory.getListBooking()
+    val apiListRoomSearch = DaoFactory.getSearchBook()
+
     routing {
         post("/v1/register") {
             val user = call.receive<UserRegister>()
@@ -65,11 +67,6 @@ fun Application.configureRouting() {
         post("v1/home/hotel/list/booking/{id?}") {
             val id = call.parameters["id"]!!.toInt()
             call.respond(apiListBooking.getListBooking(id))
-            call.respond(apiListBooking.getListBooking(id))
-            call.respond(apiListBooking.getListBooking(id))
-            call.respond(apiListBooking.getListBooking(id))
-            call.respond(apiListBooking.getListBooking(id))
-            call.respond(apiListBooking.getListBooking(id))
         }
 
         post("v1/home/hotel/list/update/booking/{status?}/{msgStatus?}/{idBooking?}") {
@@ -83,6 +80,20 @@ fun Application.configureRouting() {
         post("v1/home/hotel/user/{id?}") {
             val id = call.parameters["id"]!!.toInt()
             call.respond(apiListBooking.getHistory(id))
+        }
+
+        post("v1/search/booking/hotel") {
+            val searchHotel = call.receive<SearchHotel>()
+            call.respond(apiListRoomSearch.getSearchHotel(searchHotel))
+        }
+
+        post("v1/search/booking/room") {
+            val searchRoom = call.receive<SearchRoom>()
+            call.respond(apiListRoomSearch.getSearchRoom(searchRoom))
+        }
+
+        get("v1/insert") {
+            call.respond(apiListRoomSearch.getInsert())
         }
     }
 

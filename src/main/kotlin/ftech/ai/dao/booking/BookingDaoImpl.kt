@@ -7,6 +7,10 @@ import ftech.ai.model.*
 
 
 class BookingDaoImpl : IBookingDao {
+
+    var check = false
+    var page = 0
+
     override fun getListBooking(id: Int): Response<MutableList<Booking>> {
         val sql = QuerySql.sqlListBooking(id)
         val listBooking: MutableList<Booking> = ArrayList()
@@ -22,12 +26,19 @@ class BookingDaoImpl : IBookingDao {
     override fun getBooking(booking: Booking): Response<MutableList<BookingInfo>> {
         val sqlInsert = QuerySql.sqlInsertBooking(booking)
         ChangeDatabase.setData(sqlInsert)
-        val sqlBooking = QuerySql.sqlBooking(booking.user_id)
+
+        if (check) {
+            page += 5
+        } else {
+            page = 0
+        }
+        val sqlBooking = QuerySql.sqlBooking(booking.user_id, page)
         val listBook: MutableList<BookingInfo> = ArrayList()
         val result = ChangeDatabase.getData(sqlBooking)
         while (result.next()) {
             listBook.add(DataInfo.getBookingInfo(result))
         }
+        check = listBook.size > 0
         val response = Response<MutableList<BookingInfo>>(Success.CODE, Success.MSG)
         response.data = listBook
         return response
