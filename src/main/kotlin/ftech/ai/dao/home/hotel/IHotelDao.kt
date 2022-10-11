@@ -5,5 +5,5 @@ import ftech.ai.model.Response
 
 interface IHotelDao {
     fun getHotel(idCity: Int): Response<MutableList<Hotel>>
-    fun baseHotel(sql : String): Response<MutableList<Hotel>>
+    fun baseHotel(sql : String): MutableList<Hotel>
 }

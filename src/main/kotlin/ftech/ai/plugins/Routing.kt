@@ -1,15 +1,12 @@
 package ftech.ai.plugins
 
 
-import ftech.ai.database.ChangeDatabase
 import ftech.ai.factory.DaoFactory
 import ftech.ai.model.*
-import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import java.awt.print.Book
 
 fun Application.configureRouting() {
 
@@ -69,15 +66,12 @@ fun Application.configureRouting() {
             call.respond(apiListBooking.getListBooking(id))
         }
 
-        post("v1/home/hotel/list/update/booking/{status?}/{msgStatus?}/{idBooking?}") {
-            val status = call.parameters["status"]!!.toInt()
-            val msgStatus = call.parameters["msgStatus"]!!
-            val idBooking = call.parameters["idBooking"]!!.toInt()
-
-            call.respond(apiListBooking.getUpdateBooking(status, msgStatus, idBooking))
+        post("v1/home/hotel/payment") {
+            val payment = call.receive<Payment>()
+            call.respond(apiListBooking.getUpdateBooking(payment))
         }
 
-        post("v1/home/hotel/user/{id?}") {
+        post("v1/home/hotel/user/history/{id?}") {
             val id = call.parameters["id"]!!.toInt()
             call.respond(apiListBooking.getHistory(id))
         }
