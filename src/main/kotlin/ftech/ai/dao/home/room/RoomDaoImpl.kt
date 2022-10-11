@@ -8,10 +8,13 @@ import ftech.ai.model.*
 class RoomDaoImpl : IRoomDao {
     override fun getRoom(idHotel: Int): Response<MutableList<Room>> {
         val sqlRoom = QuerySql.sqlRoom(idHotel)
-        return baseRoom(sqlRoom)
+
+        val response = Response<MutableList<Room>>(Success.CODE, Success.MSG)
+        response.data = baseRoom(sqlRoom)
+        return response
     }
 
-    override fun baseRoom(sql: String): Response<MutableList<Room>> {
+    override fun baseRoom(sql: String): MutableList<Room> {
         val result = ChangeDatabase.getData(sql)
         val listSelectRoom: MutableList<SelectRoom> = ArrayList()
         while (result.next()) {
@@ -28,13 +31,9 @@ class RoomDaoImpl : IRoomDao {
                 }
             }
             listRoom.add(Room(selectRoom, listImageRoom))
-
         }
 
-        val response = Response<MutableList<Room>>(Success.CODE, Success.MSG)
-        response.data = listRoom
-        return response
-
+        return listRoom
     }
 
 

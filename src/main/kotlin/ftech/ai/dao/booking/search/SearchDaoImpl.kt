@@ -7,27 +7,52 @@ import ftech.ai.model.*
 
 class SearchDaoImpl : ISearchDao {
     var pageRoom = 0
-    var pageHotel = 0
+    private var pageHotel = 0
 
-
-    override fun getSearchRoom(searchRoom: SearchRoom): Response<MutableList<Room>> {
-        if (searchRoom.default == 0) {
+    override fun getSearchRoom(searchRoom: SearchRoom): Response<ResultRoom> {
+        if (searchRoom.page == 0) {
             pageRoom = 0
         } else {
-            pageRoom += 5
+            pageRoom += 6
         }
+
         val sql = QuerySql.sqlRoomSearch(searchRoom, pageRoom)
-        return DaoFactory.getRoomDao().baseRoom(sql)
+        val listRoom = DaoFactory.getRoomDao().baseRoom(sql)
+        val response = Response<ResultRoom>(Success.CODE, Success.MSG)
+        if (listRoom.size >= 6) {
+            val resultRoom = ResultRoom(
+                listRoom,
+                searchRoom.page + 1
+            )
+            response.data = resultRoom
+
+        } else {
+            val resultRoom = ResultRoom(
+                listRoom,
+                -1
+            )
+            response.data = resultRoom
+        }
+
+        return response
     }
 
-    override fun getSearchHotel(searchHotel: SearchHotel): Response<MutableList<Hotel>> {
-        if (searchHotel.default == 0) {
+    override fun getSearchHotel(searchHotel: SearchHotel): Response<ResultHotel> {
+        if (searchHotel.page == 0) {
             pageHotel = 0
         } else {
-            pageHotel += 5
+            pageHotel += 6
         }
         val sql = QuerySql.sqlHotelSearch(searchHotel, pageHotel)
-        return DaoFactory.getListHotel().baseHotel(sql)
+        val listHotel = DaoFactory.getListHotel().baseHotel(sql)
+        val response = Response<ResultHotel>(Success.CODE, Success.MSG)
+        if (listHotel.size >= 6) {
+            response.data = ResultHotel(listHotel, searchHotel.page + 1)
+        } else {
+            response.data = ResultHotel(listHotel, -1)
+        }
+        return response
+
     }
 
 

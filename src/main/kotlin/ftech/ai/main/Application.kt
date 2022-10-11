@@ -6,7 +6,7 @@ import ftech.ai.plugins.configureRouting
 import ftech.ai.plugins.configureSerialization
 
 fun main() {
-    embeddedServer(Netty, port = 8088,host = "127.0.0.1") {
+    embeddedServer(Netty, port = 8091, host = "192.168.4.197") {
         configureRouting()
         configureSerialization()
     }.start(wait = true)

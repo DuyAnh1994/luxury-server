@@ -2,7 +2,6 @@ package ftech.ai.database
 
 import ftech.ai.model.*
 import java.sql.ResultSet
-import java.util.*
 
 object DataInfo {
     fun getUser(result: ResultSet): User {
@@ -80,9 +79,9 @@ object DataInfo {
 
     fun getBookingInfo(result: ResultSet): BookingInfo {
         val bookingId: Int = result.getInt(1)
-        val nameCity: String = result.getString(2)
-        val nameHotel: String = result.getString(3)
-        val nameRoom: String = result.getString(4)
+        val roomId: Int = result.getInt(2)
+        val nameCity: String = result.getString(3)
+        val nameHotel: String = result.getString(4)
         val imageRoom: String = result.getString(5)
         val checkin: String = result.getDate(6).toString()
         val checkout: String = result.getDate(7).toString()
@@ -90,7 +89,7 @@ object DataInfo {
         val status: Int = result.getInt(9)
         val msgStatus: String = result.getString(10)
         return BookingInfo(
-            bookingId, nameCity, nameHotel, nameRoom, imageRoom, checkin, checkout, priceRoom, status, msgStatus
+            bookingId, roomId, nameCity, nameHotel, imageRoom, checkin, checkout, priceRoom, status, msgStatus
         )
     }
 
