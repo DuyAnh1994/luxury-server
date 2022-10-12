@@ -61,7 +61,7 @@ fun Application.configureRouting() {
             call.respond(apiListBooking.getBooking(booking))
         }
 
-        post("v1/home/hotel/list/booking/{id?}") {
+        get("v1/home/hotel/list/booking/{id?}") {
             val id = call.parameters["id"]!!.toInt()
             call.respond(apiListBooking.getListBooking(id))
         }
@@ -71,17 +71,17 @@ fun Application.configureRouting() {
             call.respond(apiListBooking.getUpdateBooking(payment))
         }
 
-        post("v1/home/hotel/user/history/{id?}") {
+        get("v1/home/hotel/user/history/{id?}") {
             val id = call.parameters["id"]!!.toInt()
             call.respond(apiListBooking.getHistory(id))
         }
 
-        post("v1/search/booking/hotel") {
+        get("v1/search/booking/hotel") {
             val searchHotel = call.receive<SearchHotel>()
             call.respond(apiListRoomSearch.getSearchHotel(searchHotel))
         }
 
-        post("v1/search/booking/room") {
+        get("v1/search/booking/room") {
             val searchRoom = call.receive<SearchRoom>()
             call.respond(apiListRoomSearch.getSearchRoom(searchRoom))
         }
