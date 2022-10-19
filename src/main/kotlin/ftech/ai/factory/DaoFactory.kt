@@ -14,6 +14,8 @@ import ftech.ai.dao.home.room.IRoomDao
 import ftech.ai.dao.home.room.RoomDaoImpl
 import ftech.ai.dao.home.room.roomdetail.IRoomDetailDao
 import ftech.ai.dao.home.room.roomdetail.RoomDetailDaoImpl
+import ftech.ai.dao.order.IOrderDao
+import ftech.ai.dao.order.OrderDaoImpl
 import ftech.ai.dao.register.IRegisterDao
 import ftech.ai.dao.register.RegisterDaoImpl
 
@@ -28,6 +30,7 @@ object DaoFactory {
     private val hotelDaoImpl = HotelDaoImpl()
     private val bookingDaoImpl = BookingDaoImpl()
     private val searchDaoImpl = SearchDaoImpl()
+    private val orderDaoImpl = OrderDaoImpl()
     fun getRegisterDao(): IRegisterDao {
         return registerDaoImpl
     }
@@ -58,6 +61,10 @@ object DaoFactory {
 
     fun getSearchBook(): ISearchDao {
         return searchDaoImpl
+    }
+
+    fun getOrder(): IOrderDao {
+        return orderDaoImpl
     }
 
 

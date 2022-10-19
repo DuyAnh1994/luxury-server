@@ -3,6 +3,7 @@ package ftech.ai.plugins
 
 import ftech.ai.factory.DaoFactory
 import ftech.ai.model.*
+import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -18,6 +19,7 @@ fun Application.configureRouting() {
     val apiListHotel = DaoFactory.getListHotel()
     val apiListBooking = DaoFactory.getListBooking()
     val apiListRoomSearch = DaoFactory.getSearchBook()
+    val apiOrder = DaoFactory.getOrder()
 
     routing {
         post("/v1/register") {
@@ -89,6 +91,37 @@ fun Application.configureRouting() {
         get("v1/insert") {
             call.respond(apiListRoomSearch.getInsert())
         }
+
+        get("v1/food") {
+            call.respond(apiOrder.getListFood())
+        }
+        get("v1/drink") {
+            call.respond(apiOrder.getListDrink())
+        }
+        get("v1/location/receive") {
+            call.respond(apiOrder.getListLocation())
+        }
+
+        get("v1/food/detail/{id?}") {
+            val id = call.parameters["id"]!!.toInt()
+            call.respond(apiOrder.getFoodDetail(id))
+        }
+
+        get("v1/drink/detail/{id?}") {
+            val id = call.parameters["id"]!!.toInt()
+            call.respond(apiOrder.getDrinkDetail(id))
+        }
+
+        post("v1/order") {
+            val order = call.receive<Order>()
+            call.respond(apiOrder.getOrder(order))
+        }
+
+        delete("v1/cancel/{id?}") {
+            val id = call.parameters["id"]!!.toInt()
+            call.respond(apiOrder.cancelOrder(id))
+        }
+
     }
 
 }

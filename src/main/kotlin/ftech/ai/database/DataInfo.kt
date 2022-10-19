@@ -112,4 +112,12 @@ object DataInfo {
         return Payment(payment_id, user_id, room_id, check_in, checkout, price)
     }
 
+    fun orderTotal(result: ResultSet): OrderHistory {
+        val id: Int = result.getInt(1)
+        val name: String = result.getString(2)
+        val total: Int = result.getInt(3)
+        val status: Int = result.getInt(4)
+        return OrderHistory(id, name, total, status)
+    }
+
 }
